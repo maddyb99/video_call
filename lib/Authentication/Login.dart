@@ -54,41 +54,47 @@ class _LoginState extends State<Login> {
                         inputAction: TextInputAction.next,
                         prefix: Icons.email,
                       ),
-//                      Padding(padding: EdgeInsets.all(5.0)),
-//
-//                      Row(
-//                        children: <Widget>[
-//
-//                          Container(
-//                            width: 100,
-//                            child: DropdownButtonFormField<String>(items: <String>['+91', '+65', 'Free', 'Four']
-//                                .map<DropdownMenuItem<String>>((String value) {
-//                              return DropdownMenuItem<String>(
-//                                value: value,
-//                                child: Text(value),
-//                              );
-//                            }).toList(),onChanged: (v){setState(() {
-//                              dropVal=v;
-//                            });},value: dropVal,
-//                              onSaved: (v)=>authenticate.getCountryCode(v),
-//                              decoration: InputDecoration(
-//                                icon: Icon(Icons.phone,),
-//                                contentPadding: EdgeInsets.all(0.0),
-//
-//                              ),
-//                            ),
-//                          ),
-//                          Container(
-//                            width: 179,
-//                            child: InputField(
-//                              "Mobile",
-//                                  (String s)=> authenticate.getMobile(s),
-//                              inputType: TextInputType.phone,
-//                              prefix: null,
-//                            ),
-//                          ),
-//                        ],
-//                      ),
+                      Padding(padding: EdgeInsets.all(5.0)),
+
+                      Row(
+                        children: <Widget>[
+
+                          Container(
+                            width: 100,
+                            child: DropdownButtonFormField<String>(
+                              items: <String>['+91', '+65', 'Free', 'Four']
+                                  .map<DropdownMenuItem<String>>((
+                                  String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (v) {
+                                setState(() {
+                                  dropVal = v;
+                                });
+                              },
+                              value: dropVal,
+                              onSaved: (v) => authenticate.getCountryCode(v),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.phone,),
+                                contentPadding: EdgeInsets.all(0.0),
+
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 179,
+                            child: InputField(
+                              "Mobile",
+                                  (String s) => authenticate.getMobile(s),
+                              inputType: TextInputType.phone,
+                              prefix: null,
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(padding: EdgeInsets.all(5.0)),
                       InputField(
                         "Password",

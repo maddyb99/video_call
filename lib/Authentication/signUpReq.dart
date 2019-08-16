@@ -30,6 +30,7 @@ class Authenticate {
   void nextPage(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName(':'));
+
   }
 
   Future<bool> isSignIn(context) async {
@@ -98,7 +99,8 @@ class Authenticate {
             .where("Mobile", isEqualTo: int.parse(details['Mobile']))
             .getDocuments();
         if (val.documents.length != 0) throw ("Mobile Number already in use");
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
             email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         UserData.profileData.sendEmailVerification();
@@ -118,7 +120,7 @@ class Authenticate {
         await UserData.profileData.sendEmailVerification();
         await FirebaseAuth.instance.signOut();
         formState.reset();
-        throw ("Verify");
+        throw("Verify");
       } catch (e) {
         //_isSignIn = false;
         print(e);
@@ -128,10 +130,8 @@ class Authenticate {
             context,
             e == "Verify" ? "Verification Required" : "SignUp Failed!",
             e.toString().contains("Mobile")
-                ? e
-                : e == "Verify"
-                    ? "Verify email and then signIn"
-                    : e.toString().split(',')[1]);
+                ? e : e == "Verify" ? "Verify email and then signIn"
+                : e.toString().split(',')[1]);
       }
     }
   }
@@ -152,30 +152,35 @@ class Authenticate {
           this.verificationID = verID;
           _ackAlert(context, "Code Sent", "wait");
         };
-//        await FirebaseAuth.instance.verifyPhoneNumber(phoneNumber: details["CountryCode"]+details["Mobile"], timeout: Duration(seconds: 120), verificationCompleted: (auth){
-////          await FirebaseAuth.instance.signInWithCredential(auth);
-//        }, verificationFailed: (exp){print(exp.message);}, codeSent: codeSent, codeAutoRetrievalTimeout: autoRetrievalTimeout);
+        await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: details["CountryCode"] + details["Mobile"],
+            timeout: Duration(seconds: 120),
+            verificationCompleted: (auth) {
+//          await FirebaseAuth.instance.signInWithCredential(auth);
+            },
+            verificationFailed: (exp) {
+              print(exp.message);
+            },
+            codeSent: codeSent,
+            codeAutoRetrievalTimeout: autoRetrievalTimeout);
 
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: details['Email'], password: details['Pass']);
+//        await FirebaseAuth.instance.signInWithEmailAndPassword(
+//            email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         if (!UserData.profileData.isEmailVerified) {
           await UserData.profileData.sendEmailVerification();
           await FirebaseAuth.instance.signOut();
-          throw ("Verify");
+          throw("Verify");
         }
         UserData.detailsData =
-            await userReference.document(UserData.profileData.uid).get();
+        await userReference.document(UserData.profileData.uid).get();
         nextPage(context);
         formState.reset();
       } catch (e) {
         details.clear();
-        _ackAlert(
-            context,
-            "Login Failed!",
-            e == "Verify"
-                ? "Verify email and then signIn"
-                : e.toString().split(',')[1]);
+        _ackAlert(context, "Login Failed!",
+            e == "Verify" ? "Verify email and then signIn" : e.toString().split(
+                ',')[1]);
       }
     }
   }
