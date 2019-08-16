@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:video_call/Utils/floating_action_button.dart';
+import 'package:video_call/video_call/init.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,7 +14,42 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("title"),
       ),
-      body: Text("Body"),
+      body: GridView.count(crossAxisCount: 2,
+        children: <Widget>[
+          MaterialButton(onPressed: () {
+            startVideo = new StartVideo();
+            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+              builder: (BuildContext context) {
+                return startVideo;
+              },
+            ),);
+          }, child: Text("Join"),),
+          MaterialButton(onPressed: () {
+            startVideo = new StartVideo();
+            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+              builder: (BuildContext context) {
+                return startVideo;
+              },
+            ),);
+          }, child: Text("Join"),),
+          MaterialButton(onPressed: () {
+            startVideo = new StartVideo();
+            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+              builder: (BuildContext context) {
+                return startVideo;
+              },
+            ),);
+          }, child: Text("Join"),),
+          MaterialButton(onPressed: () {
+            startVideo = new StartVideo();
+            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+              builder: (BuildContext context) {
+                return startVideo;
+              },
+            ),);
+          }, child: Text("Join"),),
+        ],),
+      floatingActionButton: FAB(),
     );
   }
 }
