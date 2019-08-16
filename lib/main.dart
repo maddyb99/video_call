@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_call/video_call/init.dart';
 
 import 'Authentication/Authentication.dart';
 import 'HomePage/HomePage.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
 //        '/user_login':(BuildContext context)=>AuthenticationPage(),
         // '/result':(BuildContext context)=>Result(),
         '/home': (BuildContext context) => HomePage(),
+        '/video': (BuildContext context) => StartVideo(),
         //'/wait_quiz':(BuildContext context)=>WaitQuiz(DocumentSnapshot),
       },
       home: AuthenticationPage(),

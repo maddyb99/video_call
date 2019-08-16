@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:video_call/Utils/customFields.dart';
 
 import './../Utils/userData.dart';
 
@@ -72,6 +73,39 @@ class Authenticate {
     );
   }
 
+  Future<void> _OTP(BuildContext context, String title, String verID) {
+    GlobalKey<FormState> formKey = new GlobalKey<FormState>();
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Form(key: formKey,
+              child: InputField("Enter OTP", this.getOTP, prefix: null,)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Submit'),
+              onPressed: () async {
+                FormState state = formKey.currentState;
+                state.save();
+                print(verificationID);
+                print(verID);
+                UserData.profileData =
+                await FirebaseAuth.instance.currentUser();
+                if (UserData.profileData == null) {
+                  AuthCredential credential = PhoneAuthProvider.getCredential(
+                      verificationId: verID, smsCode: this.verificationID);
+                  FirebaseAuth.instance.signInWithCredential(credential);
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   getUser() async {
     userReference = Firestore.instance.collection("Users");
   }
@@ -85,6 +119,8 @@ class Authenticate {
   getCountryCode(String x) => details.addAll({'CountryCode': x});
 
   getEmail(String x) => details.addAll({'Email': x});
+
+  getOTP(String x) => verificationID = x;
 
   Future<void> signUp(
       GlobalKey<FormState> _formKey, BuildContext context) async {
@@ -150,13 +186,13 @@ class Authenticate {
         };
         PhoneCodeSent codeSent = (String verID, [int forceResend]) {
           this.verificationID = verID;
-          _ackAlert(context, "Code Sent", "wait");
+          _OTP(context, "Code Sent", verID);
         };
         await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: details["CountryCode"] + details["Mobile"],
             timeout: Duration(seconds: 120),
-            verificationCompleted: (auth) {
-//          await FirebaseAuth.instance.signInWithCredential(auth);
+            verificationCompleted: (auth) async {
+              print(auth);
             },
             verificationFailed: (exp) {
               print(exp.message);
@@ -167,11 +203,11 @@ class Authenticate {
 //        await FirebaseAuth.instance.signInWithEmailAndPassword(
 //            email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
-        if (!UserData.profileData.isEmailVerified) {
-          await UserData.profileData.sendEmailVerification();
-          await FirebaseAuth.instance.signOut();
-          throw("Verify");
-        }
+//        if (!UserData.profileData.isEmailVerified) {
+//          await UserData.profileData.sendEmailVerification();
+//          await FirebaseAuth.instance.signOut();
+//          throw("Verify");
+//        }
         UserData.detailsData =
         await userReference.document(UserData.profileData.uid).get();
         nextPage(context);

@@ -39,21 +39,21 @@ class _LoginState extends State<Login> {
                   key: formKey,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
-                        child: Text(
-                          "Login",
-                          textScaleFactor: 2.0,
-                        ),
-                      ),
-                      InputField(
-                        "Email",
-                        (String s) => authenticate.getEmail(s),
-                        elevation: 2.0,
-                        inputType: TextInputType.emailAddress,
-                        inputAction: TextInputAction.next,
-                        prefix: Icons.email,
-                      ),
+//                      Padding(
+//                        padding: EdgeInsets.only(bottom: 20.0),
+//                        child: Text(
+//                          "Login",
+//                          textScaleFactor: 2.0,
+//                        ),
+//                      ),
+//                      InputField(
+//                        "Email",
+//                        (String s) => authenticate.getEmail(s),
+//                        elevation: 2.0,
+//                        inputType: TextInputType.emailAddress,
+//                        inputAction: TextInputAction.next,
+//                        prefix: Icons.email,
+//                      ),
                       Padding(padding: EdgeInsets.all(5.0)),
 
                       Row(
@@ -95,15 +95,15 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
-                      Padding(padding: EdgeInsets.all(5.0)),
-                      InputField(
-                        "Password",
-                        (String s) => authenticate.getPass(s),
-                        elevation: 2.0,
-                        inputAction: TextInputAction.done,
-                        isPassword: true,
-                        prefix: Icons.vpn_key,
-                      ),
+//                      Padding(padding: EdgeInsets.all(5.0)),
+//                      InputField(
+//                        "Password",
+//                        (String s) => authenticate.getPass(s),
+//                        elevation: 2.0,
+//                        inputAction: TextInputAction.done,
+//                        isPassword: true,
+//                        prefix: Icons.vpn_key,
+//                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(
