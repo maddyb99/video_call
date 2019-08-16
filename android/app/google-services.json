@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "946065201961",
+    "firebase_url": "https://video-call-9c56b.firebaseio.com",
+    "project_id": "video-call-9c56b",
+    "storage_bucket": "video-call-9c56b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946065201961:android:80aa63e104cc94b7",
+        "android_client_info": {
+          "package_name": "tech.maddybcorp.video_call"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946065201961-6bom4jhatngtudljd1c74tqqk82702ds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.maddybcorp.video_call",
+            "certificate_hash": "4235a6284645b68db8d3e29fefc5f310cfc1bfda"
+          }
+        },
+        {
+          "client_id": "946065201961-t4o7obrc10kke7asrc897f0eeqe5u8io.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC93OHXAGIzNU9StJI0AGwK6F5bWupLknA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946065201961-t4o7obrc10kke7asrc897f0eeqe5u8io.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
