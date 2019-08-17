@@ -228,7 +228,10 @@ class _StartVideoState extends State<StartVideo> {
 //            scrollDirection: Axis.horizontal,
             itemCount: expandedViews.length,
             itemBuilder: (BuildContext context, int index) =>
-                Material(elevation: 1.0, child: expandedViews[index],),
+                Material(
+                  elevation: 1.0,
+                  child: expandedViews[index],
+                ),
             staggeredTileBuilder: (int index) {
               if (expandedViews.length > 4)
                 return StaggeredTile.count(

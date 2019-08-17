@@ -22,7 +22,7 @@ class InputField extends StatefulWidget {
     this.hintText,
     this.fn, {
     this.elevation,
-    this.key: null,
+        this.key,
     this.inputType,
     this.isPassword: false,
     this.minLines: 1,
@@ -34,7 +34,7 @@ class InputField extends StatefulWidget {
     this.nextTextField,
     this.func,
     this.isSignUp = false,
-    this.prefix = null,
+        this.prefix,
     this.suffix,
     this.textCapitalization: TextCapitalization.none,
   });

@@ -31,7 +31,6 @@ class Authenticate {
   void nextPage(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', ModalRoute.withName(':'));
-
   }
 
   Future<bool> isSignIn(context) async {
@@ -73,15 +72,20 @@ class Authenticate {
     );
   }
 
-  Future<void> _OTP(BuildContext context, String title, String verID) {
+  Future<void> verifyOTP(BuildContext context, String title, String verID) {
     GlobalKey<FormState> formKey = new GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
-          content: Form(key: formKey,
-              child: InputField("Enter OTP", this.getOTP, prefix: null,)),
+          content: Form(
+              key: formKey,
+              child: InputField(
+                "Enter OTP",
+                this.getOTP,
+                prefix: null,
+              )),
           actions: <Widget>[
             FlatButton(
               child: Text('Submit'),
@@ -98,6 +102,7 @@ class Authenticate {
                   FirebaseAuth.instance.signInWithCredential(credential);
                 }
                 Navigator.of(context).pop();
+//                nextPage(context);
               },
             ),
           ],
@@ -135,8 +140,7 @@ class Authenticate {
             .where("Mobile", isEqualTo: int.parse(details['Mobile']))
             .getDocuments();
         if (val.documents.length != 0) throw ("Mobile Number already in use");
-        await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         UserData.profileData.sendEmailVerification();
@@ -156,7 +160,7 @@ class Authenticate {
         await UserData.profileData.sendEmailVerification();
         await FirebaseAuth.instance.signOut();
         formState.reset();
-        throw("Verify");
+        throw ("Verify");
       } catch (e) {
         //_isSignIn = false;
         print(e);
@@ -166,7 +170,9 @@ class Authenticate {
             context,
             e == "Verify" ? "Verification Required" : "SignUp Failed!",
             e.toString().contains("Mobile")
-                ? e : e == "Verify" ? "Verify email and then signIn"
+                ? e
+                : e == "Verify"
+                ? "Verify email and then signIn"
                 : e.toString().split(',')[1]);
       }
     }
@@ -181,12 +187,12 @@ class Authenticate {
       formState.save();
       print(details["CountryCode"] + details["Mobile"]);
       try {
-        PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String ID) {
-          this.verificationID = ID;
+        PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
+          this.verificationID = verID;
         };
         PhoneCodeSent codeSent = (String verID, [int forceResend]) {
           this.verificationID = verID;
-          _OTP(context, "Code Sent", verID);
+          verifyOTP(context, "Code Sent", verID);
         };
         await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: details["CountryCode"] + details["Mobile"],
@@ -208,15 +214,18 @@ class Authenticate {
 //          await FirebaseAuth.instance.signOut();
 //          throw("Verify");
 //        }
-        UserData.detailsData =
-        await userReference.document(UserData.profileData.uid).get();
+//        UserData.detailsData =
+//        await userReference.document(UserData.profileData.uid).get();
         nextPage(context);
         formState.reset();
       } catch (e) {
         details.clear();
-        _ackAlert(context, "Login Failed!",
-            e == "Verify" ? "Verify email and then signIn" : e.toString().split(
-                ',')[1]);
+        _ackAlert(
+            context,
+            "Login Failed!",
+            e == "Verify"
+                ? "Verify email and then signIn"
+                : e.toString().split(',')[1]);
       }
     }
   }

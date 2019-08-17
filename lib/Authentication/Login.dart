@@ -58,13 +58,15 @@ class _LoginState extends State<Login> {
 
                       Row(
                         children: <Widget>[
-
                           Container(
                             width: 100,
                             child: DropdownButtonFormField<String>(
-                              items: <String>['+91', '+65', 'Free', 'Four']
-                                  .map<DropdownMenuItem<String>>((
-                                  String value) {
+                              items: <String>[
+                                '+91',
+                                '+65',
+                                'Free',
+                                'Four'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -78,9 +80,10 @@ class _LoginState extends State<Login> {
                               value: dropVal,
                               onSaved: (v) => authenticate.getCountryCode(v),
                               decoration: InputDecoration(
-                                icon: Icon(Icons.phone,),
+                                icon: Icon(
+                                  Icons.phone,
+                                ),
                                 contentPadding: EdgeInsets.all(0.0),
-
                               ),
                             ),
                           ),
