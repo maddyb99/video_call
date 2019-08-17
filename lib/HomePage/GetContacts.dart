@@ -39,69 +39,139 @@ class _GetContactsState extends State<GetContacts> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: contacts.contacts.length != 0
-          ? List.generate(contacts.contacts.length, (index) {
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                child: ExpansionTile(
+      children: <Widget>[
+        contacts.contacts.length != 0
+            ? Expanded(child: ListView.builder(itemBuilder: (context, index) {
+          return ExpansionTile(
 //              contentPadding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                  leading: Container(
+            leading: Container(
 //                color: Color(getColor(contacts.contacts.elementAt(index)))==null?Colors.transparent:Color(getColor(contacts.contacts.elementAt(index))),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 2.0,
-                            spreadRadius: 0)
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 2.0,
+                      spreadRadius: 0)
+                ],
+              ),
+              padding: EdgeInsets.all(0.0),
+              width: 50,
+              height: 50,
+              child: Center(
+                child:
+                Text(contacts.contacts.elementAt(index).initials()),
+              ),
+            ),
+            title: Text(contacts.contacts
+                .elementAt(index)
+                .displayName),
+            children: List.generate(
+                contacts.contacts
+                    .elementAt(index)
+                    .phones
+                    .length,
+                    (index2) {
+                  return Padding(
+                    padding:
+                    const EdgeInsets.only(left: 80, top: 5, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(contacts.contacts
+                            .elementAt(index)
+                            .phones
+                            .elementAt(index2)
+                            .value),
                       ],
                     ),
-                    padding: EdgeInsets.all(0.0),
-                    width: 50,
-                    height: 50,
-                    child: Center(
-                      child:
-                          Text(contacts.contacts.elementAt(index).initials()),
+                  );
+                }),
+            trailing: IconButton(
+                icon: Icon(Icons.video_call),
+                onPressed: () {
+                  startVideo = new StartVideo();
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return startVideo;
+                      },
                     ),
-                  ),
-                  title: Text(contacts.contacts.elementAt(index).displayName),
-                  children: List.generate(
-                      contacts.contacts.elementAt(index).phones.length,
-                      (index2) {
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(left: 80, top: 5, bottom: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(contacts.contacts
-                              .elementAt(index)
-                              .phones
-                              .elementAt(index2)
-                              .value),
-                        ],
-                      ),
-                    );
-                  }),
-                  trailing: IconButton(
-                      icon: Icon(Icons.video_call),
-                      onPressed: () {
-                        startVideo = new StartVideo();
-                        Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return startVideo;
-                            },
-                          ),
-                        );
-                      }),
-                ),
-              );
-            })
-          : [CircularProgressIndicator()],
+                  );
+                }),
+          );
+        },
+//            separatorBuilder: (context,index)=>Divider(height: 5.0,),
+            itemCount: contacts.contacts.length
+        )) : CircularProgressIndicator(),
+//        Column(
+//          children: contacts.contacts.length != 0
+//              ? List.generate(contacts.contacts.length, (index) {
+//            return Padding(
+//              padding:
+//              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+//              child: ExpansionTile(
+////              contentPadding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+//                leading: Container(
+////                color: Color(getColor(contacts.contacts.elementAt(index)))==null?Colors.transparent:Color(getColor(contacts.contacts.elementAt(index))),
+//                  decoration: BoxDecoration(
+//                    shape: BoxShape.circle,
+//                    color: Colors.white,
+//                    boxShadow: [
+//                      BoxShadow(
+//                          color: Colors.grey,
+//                          offset: Offset(1.0, 1.0),
+//                          blurRadius: 2.0,
+//                          spreadRadius: 0)
+//                    ],
+//                  ),
+//                  padding: EdgeInsets.all(0.0),
+//                  width: 50,
+//                  height: 50,
+//                  child: Center(
+//                    child:
+//                    Text(contacts.contacts.elementAt(index).initials()),
+//                  ),
+//                ),
+//                title: Text(contacts.contacts.elementAt(index).displayName),
+//                children: List.generate(
+//                    contacts.contacts.elementAt(index).phones.length,
+//                        (index2) {
+//                      return Padding(
+//                        padding:
+//                        const EdgeInsets.only(left: 80, top: 5, bottom: 5),
+//                        child: Row(
+//                          mainAxisAlignment: MainAxisAlignment.start,
+//                          children: <Widget>[
+//                            Text(contacts.contacts
+//                                .elementAt(index)
+//                                .phones
+//                                .elementAt(index2)
+//                                .value),
+//                          ],
+//                        ),
+//                      );
+//                    }),
+//                trailing: IconButton(
+//                    icon: Icon(Icons.video_call),
+//                    onPressed: () {
+//                      startVideo = new StartVideo();
+//                      Navigator.of(context, rootNavigator: true).push(
+//                        MaterialPageRoute(
+//                          builder: (BuildContext context) {
+//                            return startVideo;
+//                          },
+//                        ),
+//                      );
+//                    }),
+//              ),
+//            );
+//          })
+//              : [CircularProgressIndicator()],
+//        ),
+      ],
     );
   }
 }
