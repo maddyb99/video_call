@@ -23,9 +23,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: GetContacts(),
-        ),
+        child: GetContacts(),
       ),
       floatingActionButton: FAB(),
     );
