@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import 'Login.dart';
 import 'signUP.dart';
 import 'signUpReq.dart';
@@ -27,7 +28,8 @@ class _LoginPageState extends State<AuthenticationPage> {
     List<PermissionGroup> permission = [
       PermissionGroup.camera,
       PermissionGroup.microphone,
-      PermissionGroup.storage
+      PermissionGroup.storage,
+      PermissionGroup.contacts
     ];
     Map<PermissionGroup, PermissionStatus> permissions =
     await PermissionHandler().requestPermissions(permission);

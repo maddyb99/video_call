@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:async/async.dart';
-import './../Utils/userData.dart';
-import './../Utils/floating_action_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import './../Utils/floating_action_button.dart';
+import './../Utils/userData.dart';
 
 class StartVideo extends StatefulWidget {
 //  final Data user;
@@ -220,9 +222,24 @@ class _StartVideoState extends State<StartVideo> {
       });
       return [
         InkWell(
-          child: GridView.count(
+          child: StaggeredGridView.countBuilder(
             crossAxisCount: 2,
-            children: expandedViews,
+
+//            scrollDirection: Axis.horizontal,
+            itemCount: expandedViews.length,
+            itemBuilder: (BuildContext context, int index) =>
+                Material(elevation: 1.0, child: expandedViews[index],),
+            staggeredTileBuilder: (int index) {
+              if (expandedViews.length > 4)
+                return StaggeredTile.count(
+                    1, (expandedViews.length % 2 == 1.0 && index == 0 ? 2 : 1));
+              else
+                return StaggeredTile.count(
+                    (expandedViews.length % 2 == 1.0 && index == 0) ? 2 : 1,
+                    1.5);
+            },
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
           ),
           onTap: () {
             timer.reset();
