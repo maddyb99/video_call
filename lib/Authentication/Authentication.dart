@@ -45,6 +45,7 @@ class _LoginPageState extends State<AuthenticationPage> {
       print(pg.toString() + " " + ps.toString() + "\n");
     });
   }
+
   void switchPage() {
     setState(() {
       controller.animateToPage(1 - controller.page.round(),

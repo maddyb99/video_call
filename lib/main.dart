@@ -8,7 +8,7 @@ import 'Utils/theme.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  themeData theme = new themeData();
+  final CustomThemeData theme = new CustomThemeData();
 
   // This widget is the root of your application.
   @override

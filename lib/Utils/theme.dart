@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class themeData {
+class CustomThemeData {
   ThemeData lightTheme() {
     return ThemeData(
       cardTheme: CardTheme(
