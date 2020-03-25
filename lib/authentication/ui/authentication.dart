@@ -10,8 +10,8 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<AuthenticationPage> {
-  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  Authenticate authenticate = new Authenticate();
+  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
+  Authenticate authenticate =  Authenticate();
   PageController controller;
 
   @override
@@ -19,7 +19,7 @@ class _LoginPageState extends State<AuthenticationPage> {
     super.initState();
     getPermissions();
     authenticate.isSignIn(context);
-    controller = new PageController(
+    controller =  PageController(
         initialPage: 0, keepPage: true, viewportFraction: 0.85);
   }
 

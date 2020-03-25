@@ -35,7 +35,7 @@ class _StartVideoState extends State<StartVideo> {
     _addRenderView(0, (viewId) {
       AgoraRtcEngine.setupLocalVideo(viewId, VideoRenderMode.Hidden);
     });
-    timer = new RestartableTimer(Duration(seconds: 5), () {
+    timer =  RestartableTimer(Duration(seconds: 5), () {
       setState(() {
         _buttonState = !_buttonState;
       });
@@ -209,7 +209,7 @@ class _StartVideoState extends State<StartVideo> {
 
   List<Widget> _viewRows() {
     List<Widget> views = _getRenderViews();
-    List<Widget> expandedViews = new List<Widget>();
+    List<Widget> expandedViews =  List<Widget>();
     if (views.length > 2) {
       views.forEach((view) {
         expandedViews.add(Container(

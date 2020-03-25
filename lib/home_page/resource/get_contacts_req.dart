@@ -7,7 +7,7 @@ class Contacts {
   QuerySnapshot temp;
 
   Contacts() {
-    contacts = new List<Contact>();
+    contacts =  List<Contact>();
   }
 
   Future<void> getAllContacts() async {

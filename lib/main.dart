@@ -8,22 +8,15 @@ import 'home_page/ui/home_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CustomThemeData theme = new CustomThemeData();
-
-  // This widget is the root of your application.
+  final CustomThemeData theme =  CustomThemeData();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: theme.lightTheme(),
       routes: <String, WidgetBuilder>{
-        // '/DispQ': (BuildContext context) => DispQuestion(),
-//        '/signUP':(BuildContext context) =>SignUp(),
-//        '/user_login':(BuildContext context)=>AuthenticationPage(),
-        // '/result':(BuildContext context)=>Result(),
         '/home': (BuildContext context) => HomePage(),
         '/video': (BuildContext context) => StartVideo(),
-        //'/wait_quiz':(BuildContext context)=>WaitQuiz(DocumentSnapshot),
       },
       home: AuthenticationPage(),
     );
