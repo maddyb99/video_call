@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-//import 'package:experto/utils/bloc/syncDocuments.dart' as sync;
 
 class UserData {
   static DocumentSnapshot detailsData;
