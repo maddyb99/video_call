@@ -1,9 +1,9 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:video_call/Utils/floating_action_button.dart';
+import 'package:video_call/common/ui/floating_action_button.dart';
 import 'package:video_call/video_call/init.dart';
 
-import 'GetContactsReq.dart';
+import '../resource/get_contacts_req.dart';
 
 class GetContacts extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './../Utils/customFields.dart';
-import 'signUpReq.dart';
+import '../../common/ui/customFields.dart';
+import '../resource/signUpReq.dart';
 
 class SignUp extends StatefulWidget {
   final VoidCallback back;

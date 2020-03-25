@@ -1,4 +1,4 @@
-import './../video_call/init.dart';
+import './../../video_call/init.dart';
 import 'package:flutter/material.dart';
 
 StartVideo startVideo;

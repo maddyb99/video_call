@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:video_call/Utils/customFields.dart';
+import 'package:video_call/common/ui/customFields.dart';
 
-import './../Utils/userData.dart';
+import './../../common/userData.dart';
 
 class Authenticate {
   CollectionReference userReference;
