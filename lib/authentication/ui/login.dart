@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../common/ui/customFields.dart';
-import '../resource/signUpReq.dart';
+import 'package:video_call/authentication/resource/signUpReq.dart';
+import 'package:video_call/common/ui/customFields.dart';
 
 class Login extends StatefulWidget {
   final VoidCallback signup;

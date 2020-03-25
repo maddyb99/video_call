@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'login.dart';
-import 'sign_up.dart';
-import '../resource/signUpReq.dart';
+import 'package:video_call/authentication/resource/signUpReq.dart';
+import 'package:video_call/authentication/ui/login.dart';
+import 'package:video_call/authentication/ui/sign_up.dart';
 
 class AuthenticationPage extends StatefulWidget {
   @override

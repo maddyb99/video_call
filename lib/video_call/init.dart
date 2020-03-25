@@ -4,9 +4,8 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import './../common/ui/floating_action_button.dart';
-import './../common/userData.dart';
+import 'package:video_call/common/ui/floating_action_button.dart';
+import 'package:video_call/common/userData.dart';
 
 class StartVideo extends StatefulWidget {
 //  final Data user;
