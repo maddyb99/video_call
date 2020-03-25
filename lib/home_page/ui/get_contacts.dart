@@ -15,8 +15,8 @@ class _GetContactsState extends State<GetContacts> {
   @override
   void initState() {
     super.initState();
-    contacts = new Contacts();
-    contacts.finalContacts = new List<Contact>();
+    contacts =  Contacts();
+    contacts.finalContacts =  List<Contact>();
     getAllContacts();
   }
 
@@ -73,7 +73,7 @@ class _GetContactsState extends State<GetContacts> {
       trailing: IconButton(
           icon: Icon(Icons.video_call),
           onPressed: () {
-            startVideo = new StartVideo();
+            startVideo =  StartVideo();
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {

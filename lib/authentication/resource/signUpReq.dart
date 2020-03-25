@@ -15,13 +15,13 @@ class Authenticate {
 
   Authenticate() {
     //_isSignIn = false;
-    details = new Map<String, dynamic>();
+    details =  Map<String, dynamic>();
     getUser();
     msg = "Invalid details";
   }
 
   void clear() {
-    details = new Map<String, dynamic>();
+    details =  Map<String, dynamic>();
     getUser();
     msg = "Invalid details";
     UserData.profileData = null;
@@ -72,7 +72,7 @@ class Authenticate {
   }
 
   Future<void> verifyOTP(BuildContext context, String title, String verID) {
-    GlobalKey<FormState> formKey = new GlobalKey<FormState>();
+    GlobalKey<FormState> formKey =  GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -143,7 +143,7 @@ class Authenticate {
             email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         UserData.profileData.sendEmailVerification();
-        currentUser = new Users(
+        currentUser =  Users(
           email: details['Email'],
           name: details['Name'],
           m: details['Mobile'],

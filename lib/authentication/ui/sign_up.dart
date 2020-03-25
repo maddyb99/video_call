@@ -16,8 +16,8 @@ class _SignUpPageState extends State<SignUp> {
 
   _SignUpPageState({this.back});
 
-  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  final Authenticate authenticate = new Authenticate();
+  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
+  final Authenticate authenticate =  Authenticate();
 
   @override
   Widget build(BuildContext context) {
