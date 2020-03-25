@@ -1,0 +1,10 @@
+<Configuration>
+  <Info Description="Office Professional Plus 2019 (64-bit)" />
+  <Add OfficeClientEdition="64" Channel="PerpetualVL2019" SourcePath="C:\OfficeSetup">
+    <Product ID="ProPlus2019Volume" PIDKEY="#####-#####-#####-#####-#####">
+      <Language ID="en-us" />
+    </Product>
+  </Add>
+  <RemoveMSI />
+  <Display Level="Full" AcceptEULA="TRUE" />
+</Configuration>

@@ -32,7 +32,7 @@ class _LoginPageState extends State<AuthenticationPage> {
       PermissionGroup.contacts
     ];
     Map<PermissionGroup, PermissionStatus> permissions =
-    await PermissionHandler().requestPermissions(permission);
+        await PermissionHandler().requestPermissions(permission);
     /*permission.forEach((PermissionGroup p)async{
       PermissionStatus permissionStatus = await PermissionHandler().checkPermissionStatus(p);
       if(permissionStatus.value==0){
