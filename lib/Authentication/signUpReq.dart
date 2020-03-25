@@ -95,7 +95,7 @@ class Authenticate {
                 print(verificationID);
                 print(verID);
                 UserData.profileData =
-                await FirebaseAuth.instance.currentUser();
+                    await FirebaseAuth.instance.currentUser();
                 if (UserData.profileData == null) {
                   AuthCredential credential = PhoneAuthProvider.getCredential(
                       verificationId: verID, smsCode: this.verificationID);
@@ -172,8 +172,8 @@ class Authenticate {
             e.toString().contains("Mobile")
                 ? e
                 : e == "Verify"
-                ? "Verify email and then signIn"
-                : e.toString().split(',')[1]);
+                    ? "Verify email and then signIn"
+                    : e.toString().split(',')[1]);
       }
     }
   }

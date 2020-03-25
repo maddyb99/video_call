@@ -66,9 +66,7 @@ class _GetContactsState extends State<GetContacts> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text(contact.phones
-                  .elementAt(index2)
-                  .value),
+              Text(contact.phones.elementAt(index2).value),
             ],
           ),
         );
@@ -94,12 +92,12 @@ class _GetContactsState extends State<GetContacts> {
       children: <Widget>[
         contacts.contacts.length != 0
             ? Expanded(
-            child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return contactTile(contacts.contacts.elementAt(index));
-                },
+                child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return contactTile(contacts.contacts.elementAt(index));
+                    },
 //            separatorBuilder: (context,index)=>Divider(height: 5.0,),
-                itemCount: contacts.contacts.length))
+                    itemCount: contacts.contacts.length))
             : Center(child: CircularProgressIndicator()),
       ],
     );

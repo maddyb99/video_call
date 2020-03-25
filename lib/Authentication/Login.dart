@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
                             width: 179,
                             child: InputField(
                               "Mobile",
-                                  (String s) => authenticate.getMobile(s),
+                              (String s) => authenticate.getMobile(s),
                               inputType: TextInputType.phone,
                               prefix: null,
                             ),
