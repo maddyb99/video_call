@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:video_call/Utils/floating_action_button.dart';
+import 'package:video_call/common/ui/floating_action_button.dart';
 
-import 'GetContacts.dart';
+import 'get_contacts.dart';
 
 class HomePage extends StatefulWidget {
   @override

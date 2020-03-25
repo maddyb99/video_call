@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:video_call/video_call/init.dart';
 
-import 'Authentication/Authentication.dart';
-import 'HomePage/HomePage.dart';
-import 'Utils/theme.dart';
+import 'Authentication/ui/authentication.dart';
+import 'home_page/ui/home_page.dart';
+import 'common/theme.dart';
 
 void main() => runApp(MyApp());
 
