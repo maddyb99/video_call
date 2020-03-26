@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:video_call/common/ui/floating_action_button.dart';
 import 'package:video_call/common/userData.dart';
+import 'package:video_call/video_call/ui/bottom_buttons.dart';
 
 class StartVideo extends StatefulWidget {
 //  final Data user;
@@ -35,7 +36,7 @@ class _StartVideoState extends State<StartVideo> {
     _addRenderView(0, (viewId) {
       AgoraRtcEngine.setupLocalVideo(viewId, VideoRenderMode.Hidden);
     });
-    timer =  RestartableTimer(Duration(seconds: 5), () {
+    timer = RestartableTimer(Duration(seconds: 5), () {
       setState(() {
         _buttonState = !_buttonState;
       });
@@ -92,43 +93,43 @@ class _StartVideoState extends State<StartVideo> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _bottomButton(Icons.speaker_phone, speaker, () async {
-                    setState(() {
-                      speaker = !speaker;
-                    });
-                    AgoraRtcEngine.setEnableSpeakerphone(speaker);
-                  }),
-                  _bottomButton(Icons.mic_off, mic, () async {
-                    setState(() {
-                      mic = !mic;
-                    });
-                    AgoraRtcEngine.enableLocalAudio(!mic);
-                  }),
-                  _bottomButton(
-                      camera ? Icons.camera_rear : Icons.camera_front, false,
-                      () async {
-                    setState(() {
-                      camera = !camera;
-                    });
-                    AgoraRtcEngine.switchCamera();
-                  }),
+                  BottomButton(
+                    icon: Icons.speaker_phone,
+                    highlight: speaker,
+                    func:() async {
+                      setState(() {
+                        speaker = !speaker;
+                        timer.reset();
+                      });
+                      AgoraRtcEngine.setEnableSpeakerphone(speaker);
+                    },
+                  ),
+                  BottomButton(
+                    icon: Icons.mic_off,
+                    highlight: mic,
+                    func: () async {
+                      setState(() {
+                        mic = !mic;
+                        timer.reset();
+                      });
+                      AgoraRtcEngine.enableLocalAudio(!mic);
+                    },
+                  ),
+                  BottomButton(
+                    icon: camera ? Icons.camera_rear : Icons.camera_front,
+                    highlight: false,
+                    func:() async {
+                      setState(() {
+                        camera = !camera;
+                        timer.reset();
+                      });
+                      AgoraRtcEngine.switchCamera();
+                    },
+                  ),
                 ],
               ),
             )
           : null,
-    );
-  }
-
-  Widget _bottomButton(IconData icon, bool highlight, Function func) {
-    return FlatButton(
-      shape: CircleBorder(),
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      onPressed: () {
-        func();
-        timer.reset();
-      },
-      child: Icon(icon),
-      color: highlight ? Colors.blue[100] : Color.fromARGB(100, 255, 227, 242),
     );
   }
 
@@ -210,7 +211,7 @@ class _StartVideoState extends State<StartVideo> {
   List<Widget> _viewRows() {
     print("view rows");
     List<Widget> views = _getRenderViews();
-    List<Widget> expandedViews =  List<Widget>();
+    List<Widget> expandedViews = List<Widget>();
     print(views.length);
     if (views.length > 2) {
       views.forEach((view) {
