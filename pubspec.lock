@@ -4,10 +4,10 @@ packages:
   agora_rtc_engine:
     dependency: "direct main"
     description:
-      path: "customSDK\\Agora-SDK"
-      relative: true
-    source: path
-    version: "0.9.5"
+      name: agora_rtc_engine
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.8"
   archive:
     dependency: transitive
     description:

@@ -208,8 +208,10 @@ class _StartVideoState extends State<StartVideo> {
   }
 
   List<Widget> _viewRows() {
+    print("view rows");
     List<Widget> views = _getRenderViews();
     List<Widget> expandedViews =  List<Widget>();
+    print(views.length);
     if (views.length > 2) {
       views.forEach((view) {
         expandedViews.add(Container(
@@ -395,7 +397,7 @@ class _StartVideoState extends State<StartVideo> {
   }
 
   void _addRenderView(int uid, Function(int viewId) finished) {
-    Widget view = AgoraRtcEngine.createNativeView(uid, (viewId) {
+    Widget view = AgoraRtcEngine.createNativeView((viewId) {
       _getVideoSession(uid).viewId = viewId;
       if (finished != null) {
         finished(viewId);
