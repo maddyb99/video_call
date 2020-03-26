@@ -177,7 +177,7 @@ class Authenticate {
     }
   }
 
-  Future<void> signIn(
+  Future<void> signIn (
       GlobalKey<FormState> _formKey, BuildContext context) async {
     details.clear();
     FormState formState = _formKey.currentState;
@@ -189,9 +189,9 @@ class Authenticate {
         PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
           this.verificationID = verID;
         };
-        PhoneCodeSent codeSent = (String verID, [int forceResend]) {
+        PhoneCodeSent codeSent =  (String verID, [int forceResend]) async{
           this.verificationID = verID;
-          verifyOTP(context, "Code Sent", verID);
+          await verifyOTP(context, "Code Sent", verID);
         };
         await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: details["CountryCode"] + details["Mobile"],
@@ -203,11 +203,12 @@ class Authenticate {
               print(exp.message);
             },
             codeSent: codeSent,
-            codeAutoRetrievalTimeout: autoRetrievalTimeout);
+            codeAutoRetrievalTimeout: autoRetrievalTimeout,);
 
 //        await FirebaseAuth.instance.signInWithEmailAndPassword(
 //            email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
+        print(UserData.profileData.toString());
 //        if (!UserData.profileData.isEmailVerified) {
 //          await UserData.profileData.sendEmailVerification();
 //          await FirebaseAuth.instance.signOut();

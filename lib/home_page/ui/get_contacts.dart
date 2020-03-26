@@ -1,6 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:video_call/common/ui/floating_action_button.dart';
+import 'package:video_call/common/userData.dart';
 import 'package:video_call/home_page/resource/get_contacts_req.dart';
 import 'package:video_call/video_call/init.dart';
 
@@ -73,6 +74,7 @@ class _GetContactsState extends State<GetContacts> {
       trailing: IconButton(
           icon: Icon(Icons.video_call),
           onPressed: () {
+            print(UserData.profileData.phoneNumber);
             startVideo =  StartVideo();
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
