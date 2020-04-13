@@ -99,7 +99,7 @@ class InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    print(elevation);
+//    print(elevation);
     return Material(
       elevation: 1.0,
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -144,8 +144,8 @@ class InputFieldState extends State<InputField> {
           if (value.isEmpty) {
             return 'please enter this field';
           }
-          print(value.length);
-          print(maxLength);
+//          print(value.length);
+//          print(maxLength);
           if (maxLength != 0 && value.length > maxLength) {
             return 'max length exceeded';
           }

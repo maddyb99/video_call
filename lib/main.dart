@@ -8,7 +8,7 @@ import 'home_page/ui/home_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CustomThemeData theme =  CustomThemeData();
+  final CustomThemeData theme = CustomThemeData();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

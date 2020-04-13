@@ -96,7 +96,7 @@ class _StartVideoState extends State<StartVideo> {
                   BottomButton(
                     icon: Icons.speaker_phone,
                     highlight: speaker,
-                    func:() async {
+                    func: () async {
                       setState(() {
                         speaker = !speaker;
                         timer.reset();
@@ -118,7 +118,7 @@ class _StartVideoState extends State<StartVideo> {
                   BottomButton(
                     icon: camera ? Icons.camera_rear : Icons.camera_front,
                     highlight: false,
-                    func:() async {
+                    func: () async {
                       setState(() {
                         camera = !camera;
                         timer.reset();

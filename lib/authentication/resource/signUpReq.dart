@@ -15,13 +15,13 @@ class Authenticate {
 
   Authenticate() {
     //_isSignIn = false;
-    details =  Map<String, dynamic>();
+    details = Map<String, dynamic>();
     getUser();
     msg = "Invalid details";
   }
 
   void clear() {
-    details =  Map<String, dynamic>();
+    details = Map<String, dynamic>();
     getUser();
     msg = "Invalid details";
     UserData.profileData = null;
@@ -72,7 +72,7 @@ class Authenticate {
   }
 
   Future<void> verifyOTP(BuildContext context, String title, String verID) {
-    GlobalKey<FormState> formKey =  GlobalKey<FormState>();
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -143,7 +143,7 @@ class Authenticate {
             email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         UserData.profileData.sendEmailVerification();
-        currentUser =  Users(
+        currentUser = Users(
           email: details['Email'],
           name: details['Name'],
           m: details['Mobile'],
@@ -177,7 +177,7 @@ class Authenticate {
     }
   }
 
-  Future<void> signIn (
+  Future<void> signIn(
       GlobalKey<FormState> _formKey, BuildContext context) async {
     details.clear();
     FormState formState = _formKey.currentState;
@@ -189,33 +189,27 @@ class Authenticate {
         PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
           this.verificationID = verID;
         };
-        PhoneCodeSent codeSent =  (String verID, [int forceResend]) async{
+        PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
           this.verificationID = verID;
           await verifyOTP(context, "Code Sent", verID);
         };
         await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: details["CountryCode"] + details["Mobile"],
-            timeout: Duration(seconds: 120),
-            verificationCompleted: (auth) async {
-              print(auth);
-            },
-            verificationFailed: (exp) {
-              print(exp.message);
-            },
-            codeSent: codeSent,
-            codeAutoRetrievalTimeout: autoRetrievalTimeout,);
+          phoneNumber: details["CountryCode"] + details["Mobile"],
+          timeout: Duration(seconds: 120),
+          verificationCompleted: (auth) async {
+            print(auth);
+          },
+          verificationFailed: (exp) {
+            print(exp.message);
+          },
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: autoRetrievalTimeout,
+        );
 
 //        await FirebaseAuth.instance.signInWithEmailAndPassword(
 //            email: details['Email'], password: details['Pass']);
         UserData.profileData = await FirebaseAuth.instance.currentUser();
         print(UserData.profileData.toString());
-//        if (!UserData.profileData.isEmailVerified) {
-//          await UserData.profileData.sendEmailVerification();
-//          await FirebaseAuth.instance.signOut();
-//          throw("Verify");
-//        }
-//        UserData.detailsData =
-//        await userReference.document(UserData.profileData.uid).get();
         nextPage(context);
         formState.reset();
       } catch (e) {
