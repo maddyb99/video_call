@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:video_call/common/ui/customFields.dart';
 import 'package:video_call/common/userData.dart';
 
 class Authenticate {
@@ -11,7 +10,7 @@ class Authenticate {
   Map<String, dynamic> details;
   Future<void> Function(BuildContext context) fn;
   String msg;
-  String verificationID;
+  String verificationID,status;
 
   Authenticate() {
     //_isSignIn = false;
@@ -71,44 +70,6 @@ class Authenticate {
     );
   }
 
-  Future<void> verifyOTP(BuildContext context, String title, String verID) {
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Form(
-              key: formKey,
-              child: InputField(
-                "Enter OTP",
-                this.getOTP,
-                prefix: null,
-              )),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Submit'),
-              onPressed: () async {
-                FormState state = formKey.currentState;
-                state.save();
-                print(verificationID);
-                print(verID);
-                UserData.profileData =
-                    await FirebaseAuth.instance.currentUser();
-                if (UserData.profileData == null) {
-                  AuthCredential credential = PhoneAuthProvider.getCredential(
-                      verificationId: verID, smsCode: this.verificationID);
-                  FirebaseAuth.instance.signInWithCredential(credential);
-                }
-                Navigator.of(context).pop();
-//                nextPage(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   getUser() async {
     userReference = Firestore.instance.collection("Users");
@@ -176,29 +137,59 @@ class Authenticate {
       }
     }
   }
+Future<void> signInManOTP(GlobalKey<FormState> _formKey,String smsCode) async{
 
-  Future<void> signIn(
+  AuthCredential _authCredential = PhoneAuthProvider.getCredential(
+      verificationId: verificationID, smsCode: smsCode);
+  FirebaseAuth.instance.signInWithCredential(_authCredential).catchError((error) {
+//      setState(() {
+    status = 'Something has gone wrong, please try later';
+//      });
+  });
+  //        .then((FirebaseUser user) async {
+////      setState(() {
+//        status = 'Authentication successful';
+////      });
+////      onAuthenticationSuccessful();
+//    return true;
+//    });
+}
+  Future<void> signInAutoOTP(
       GlobalKey<FormState> _formKey, BuildContext context) async {
     details.clear();
     FormState formState = _formKey.currentState;
     if (formState.validate()) {
-      Future.delayed(Duration(seconds: 5));
       formState.save();
       print(details["CountryCode"] + details["Mobile"]);
       try {
-        PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
-          this.verificationID = verID;
-        };
         PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
           this.verificationID = verID;
-          await verifyOTP(context, "Code Sent", verID);
+          print('Code sent to ${details['Mobile']}');
+          status = "Enter the code sent to " + details['Mobile'];
+        };
+        PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
+          this.verificationID = verID;
+          status = "\nAuto retrieval time out";
+        };
+        final PhoneVerificationCompleted verificationCompleted =
+            (AuthCredential auth) {
+            status = 'Auto retrieving verification code';
+          FirebaseAuth.instance.signInWithCredential(auth)
+              .then((AuthResult value) {
+            if (value.user != null) {
+                status = 'Authentication successful';
+//              onAuthenticationSuccessful();
+            } else {
+                status = 'Invalid code/invalid authentication';
+            }
+          }).catchError((error) {
+              status = 'Something has gone wrong, please try later';
+          });
         };
         await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: details["CountryCode"] + details["Mobile"],
-          timeout: Duration(seconds: 120),
-          verificationCompleted: (auth) async {
-            print(auth);
-          },
+          timeout: Duration(seconds: 60),
+          verificationCompleted: verificationCompleted,
           verificationFailed: (exp) {
             print(exp.message);
           },
@@ -224,3 +215,4 @@ class Authenticate {
     }
   }
 }
+Authenticate authenticate;

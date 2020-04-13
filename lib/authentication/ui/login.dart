@@ -18,10 +18,10 @@ class _LoginState extends State<Login> {
   _LoginState({this.signup});
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  Authenticate authenticate = Authenticate();
 
   @override
   Widget build(BuildContext context) {
+    authenticate=Authenticate();
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -118,9 +118,10 @@ class _LoginState extends State<Login> {
               ),
             ),
             MaterialButton(
-              onPressed: () {
+              onPressed: ()async {
                 authenticate.getCountryCode(dropVal);
-                authenticate.signIn(formKey, context);
+                authenticate.signInAutoOTP(formKey, context);
+                signup();
               },
               child: Text("Sign in"),
               color: Colors.blueAccent,
