@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_call/authentication/resource/signUpReq.dart';
 import 'package:video_call/authentication/ui/login.dart';
-import 'package:video_call/authentication/ui/sign_up.dart';
+import 'package:video_call/authentication/ui/otp_verify.dart';
 
 class AuthenticationPage extends StatefulWidget {
   @override
@@ -10,8 +10,8 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<AuthenticationPage> {
-  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
-  Authenticate authenticate =  Authenticate();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Authenticate authenticate = Authenticate();
   PageController controller;
 
   @override
@@ -19,8 +19,8 @@ class _LoginPageState extends State<AuthenticationPage> {
     super.initState();
     getPermissions();
     authenticate.isSignIn(context);
-    controller =  PageController(
-        initialPage: 0, keepPage: true, viewportFraction: 0.85);
+    controller =
+        PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
   }
 
   Future<void> getPermissions() async {
@@ -59,12 +59,10 @@ class _LoginPageState extends State<AuthenticationPage> {
         body: PageView(
       controller: controller,
       pageSnapping: true,
-      physics: BouncingScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Login(signup: switchPage),
-        SignUp(
-          back: switchPage,
-        ),
+        OTPVerify(phoneNo: 'fsdf',back: switchPage,),
       ],
     ));
   }

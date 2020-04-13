@@ -17,12 +17,11 @@ class _LoginState extends State<Login> {
 
   _LoginState({this.signup});
 
-  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
-  Authenticate authenticate =  Authenticate();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Authenticate authenticate = Authenticate();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Center(
       child: SingleChildScrollView(
         child: Column(
