@@ -3,6 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:video_call/authentication/resource/signUpReq.dart';
 import 'package:video_call/authentication/ui/login.dart';
 import 'package:video_call/authentication/ui/otp_verify.dart';
+import 'package:video_call/authentication/ui/profileinput.dart';
 
 class AuthenticationPage extends StatefulWidget {
   @override
@@ -45,11 +46,19 @@ class _LoginPageState extends State<AuthenticationPage> {
     });
   }
 
-  void switchPage() {
-    setState(() {
-      controller.animateToPage(1 - controller.page.round(),
-          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-    });
+  void backpage() {
+    if (controller.page.round() != 0)
+      setState(() {
+        controller.animateToPage(0,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      });
+  }
+  void nextpage() {
+    if (controller.page.round() != 2)
+      setState(() {
+        controller.animateToPage(controller.page.round()+1,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      });
   }
 
   @override
@@ -61,8 +70,13 @@ class _LoginPageState extends State<AuthenticationPage> {
       pageSnapping: true,
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        Login(signup: switchPage),
-        OTPVerify(phoneNo: 'fsdf',back: switchPage,),
+        Login(signup: nextpage),
+        OTPVerify(
+          phoneNo: 'fsdf',
+          back: backpage,
+          submit:nextpage,
+        ),
+        ProfileInput(back: backpage,),
       ],
     ));
   }
