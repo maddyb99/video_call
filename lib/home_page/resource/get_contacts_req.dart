@@ -43,7 +43,9 @@ class Contacts {
           }, orElse: () {
             return null;
           }) !=
-          null) return true;
+          null)
+        return true;
+      return false;
     });
     return false;
   }
