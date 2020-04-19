@@ -7,10 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: flutter upgrade
-        uses: ./action
-        with:
-          args: upgrade
+      - run: flutter upgrade
 
       - name: install dependencies
         uses: ./action
