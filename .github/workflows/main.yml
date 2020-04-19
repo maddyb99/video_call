@@ -16,6 +16,13 @@ jobs:
       - run: flutter pub get
         # run static analys code
       - run: flutter build apk --release
+        
+      - run: zip -r builds.zip build/
+      - name: Create a Release ZIP
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "builds.zip"
+          token: ${{ secrets.TOKEN }}
 #
 #      - name: install dependencies
 #        uses: ./action
