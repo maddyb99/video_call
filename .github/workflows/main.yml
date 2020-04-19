@@ -11,22 +11,23 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.12.14'
-          channel: 'dev'
+          channel: 'stable'
+      - run: flutter upgrade
       - run: flutter pub get
         # run static analys code
       - run: flutter build apk --release
-
-      - name: install dependencies
-        uses: ./action
-        with:
-          args: pub get
-
-      - name: clean stale build and cache
-        uses: ./action
-        with:
-          args: clean
-
-      - name: build apk
-        uses: ./action
-        with:
-          args: build apk --release
+#
+#      - name: install dependencies
+#        uses: ./action
+#        with:
+#          args: pub get
+#
+#      - name: clean stale build and cache
+#        uses: ./action
+#        with:
+#          args: clean
+#
+#      - name: build apk
+#        uses: ./action
+#        with:
+#          args: build apk --release
