@@ -11,7 +11,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.12.14'
-          channel: 'stable'
+          channel: 'dev'
       - run: flutter upgrade
       - run: flutter pub get
         # run static analys code
