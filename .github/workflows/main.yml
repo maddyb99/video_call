@@ -8,6 +8,11 @@ jobs:
       - uses: actions/checkout@master
 
       - name: install dependencies
+          uses: ./action
+          with:
+            args: upgrade
+
+      - name: install dependencies
         uses: ./action
         with:
           args: pub get
