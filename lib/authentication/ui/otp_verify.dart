@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:video_call/authentication/resource/signUpReq.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
 class OTPVerify extends StatefulWidget {
