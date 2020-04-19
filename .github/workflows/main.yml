@@ -6,8 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-
-      - run: flutter upgrade
+        # Setup a flutter environment.
+        # https://github.com/marketplace/actions/flutter-action
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.12.14'
+          channel: 'dev'
+      - run: flutter pub get
+        # run static analys code
+      - run: flutter build apk --release
 
       - name: install dependencies
         uses: ./action
