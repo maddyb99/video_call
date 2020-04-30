@@ -13,7 +13,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final VoidCallback signup;
-  String dropVal = '+91';
+  String dropVal ;
 
   _LoginState({this.signup});
 
@@ -28,7 +28,6 @@ class _LoginState extends State<Login> {
           children: <Widget>[
 //            Padding(padding: EdgeInsets.all(10.0),child: Text("Login",textScaleFactor: 2.0,),),
             Card(
-              elevation: 10.0,
               margin: EdgeInsets.all(15.0),
               color: Colors.cyanAccent[100],
               child: Padding(
@@ -37,21 +36,6 @@ class _LoginState extends State<Login> {
                   key: formKey,
                   child: Column(
                     children: <Widget>[
-//                      Padding(
-//                        padding: EdgeInsets.only(bottom: 20.0),
-//                        child: Text(
-//                          "Login",
-//                          textScaleFactor: 2.0,
-//                        ),
-//                      ),
-//                      InputField(
-//                        "Email",
-//                        (String s) => authenticate.getEmail(s),
-//                        elevation: 2.0,
-//                        inputType: TextInputType.emailAddress,
-//                        inputAction: TextInputAction.next,
-//                        prefix: Icons.email,
-//                      ),
                       Padding(padding: EdgeInsets.all(5.0)),
 
                       Row(
@@ -62,8 +46,8 @@ class _LoginState extends State<Login> {
                               items: <String>[
                                 '+91',
                                 '+65',
-                                'Free',
-                                'Four'
+                                '+44',
+                                '+45'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -126,11 +110,6 @@ class _LoginState extends State<Login> {
               child: Text("Sign in"),
               color: Colors.blueAccent,
               height: 35,
-              elevation: 10.0,
-            ),
-            MaterialButton(
-              onPressed: signup,
-              child: Text("Sign up?"),
             ),
           ],
         ),

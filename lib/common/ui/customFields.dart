@@ -153,6 +153,7 @@ class InputFieldState extends State<InputField> {
             password = value;
           else if (isSignUp && isPassword && value != password)
             return 'Passwords don\'t match';
+          return null;
         },
         onEditingComplete: () {
           if (inputAction == TextInputAction.done) func();
