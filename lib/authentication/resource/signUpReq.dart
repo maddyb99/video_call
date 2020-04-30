@@ -87,56 +87,6 @@ class Authenticate {
 
   getOTP(String x) => verificationID = x;
 
-  Future<void> signUp(
-      GlobalKey<FormState> _formKey, BuildContext context) async {
-    FormState formState = _formKey.currentState;
-    details.clear();
-    if (formState.validate()) {
-      formState.save();
-      try {
-        //_isSignIn = true;
-        print(details);
-        QuerySnapshot val = await userReference
-            .where("Mobile", isEqualTo: int.parse(details['Mobile']))
-            .getDocuments();
-        if (val.documents.length != 0) throw ("Mobile Number already in use");
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: details['Email'], password: details['Pass']);
-        UserData.profileData = await FirebaseAuth.instance.currentUser();
-        UserData.profileData.sendEmailVerification();
-        currentUser = Users(
-          email: details['Email'],
-          name: details['Name'],
-          m: details['Mobile'],
-        );
-        Firestore.instance.runTransaction((Transaction t) async {
-          await userReference
-              .document(UserData.profileData.uid)
-              .setData(currentUser.toJson());
-        });
-        userSnapshot = await userReference
-            .where('emailID', isEqualTo: details['Email'])
-            .getDocuments();
-        await UserData.profileData.sendEmailVerification();
-        await FirebaseAuth.instance.signOut();
-        formState.reset();
-        throw ("Verify");
-      } catch (e) {
-        //_isSignIn = false;
-        print(e);
-        details.clear();
-        currentUser = null;
-        _ackAlert(
-            context,
-            e == "Verify" ? "Verification Required" : "SignUp Failed!",
-            e.toString().contains("Mobile")
-                ? e
-                : e == "Verify"
-                    ? "Verify email and then signIn"
-                    : e.toString().split(',')[1]);
-      }
-    }
-  }
 Future<void> signInManOTP(GlobalKey<FormState> _formKey,String smsCode) async{
 
   AuthCredential _authCredential = PhoneAuthProvider.getCredential(
@@ -146,13 +96,6 @@ Future<void> signInManOTP(GlobalKey<FormState> _formKey,String smsCode) async{
     status = 'Something has gone wrong, please try later';
 //      });
   });
-  //        .then((FirebaseUser user) async {
-////      setState(() {
-//        status = 'Authentication successful';
-////      });
-////      onAuthenticationSuccessful();
-//    return true;
-//    });
 }
   Future<void> signInAutoOTP(
       GlobalKey<FormState> _formKey, BuildContext context) async {
