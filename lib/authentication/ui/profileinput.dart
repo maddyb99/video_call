@@ -1,54 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
-class ProfileInput extends StatefulWidget{
+class ProfileInput extends StatelessWidget {
   final Function back;
-  ProfileInput({this.back});
-  @override
-  _ProfileInputState createState() => _ProfileInputState();
-}
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String name, mobile, profilePhoto;
 
-class _ProfileInputState extends State<ProfileInput> {
+  ProfileInput({this.back});
+
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context,constraints){
-        return Container(
-          margin: EdgeInsets.only(
-            top: constraints.maxHeight / 10,
-            bottom: constraints.maxHeight / 10,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
+    var userProvider = Provider.of<UserProvider>(context);
+    return ChangeNotifierProvider.value(
+      value: userProvider,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Card(
+//            shape: RoundedRectangleBorder(borderRadius: kCardBorderRadiusAll),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        'Enter Details:'),
+                    padding: const EdgeInsets.all(64.0),
+                    child: SizedBox(),
                   ),
-                  Container(
-                    width: constraints.maxWidth * 0.4,
-                    child: InputField('Enter OTP', (str) {}),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: <Widget>[
+                          InputField(
+                            'Name',
+                            (s) => name = s,
+                            elevation: 2.0,
+                            inputAction: TextInputAction.next,
+                            prefix: Icons.person,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    child: MaterialButton(
+                      color: Colors.green[400],
+                      onPressed: () async {
+                        FormState formState = formKey.currentState;
+                        if (formState.validate()) {
+                          formState.save();
+                          await userProvider.updateUser(name);
+                          if (userProvider.status == StatusCodes.loggedIn) {
+                            print("im in");
+                            Navigator.of(context).pushNamedAndRemoveUntil('/home', ModalRoute.withName(':'));
+                          }
+                          else if (userProvider.status == StatusCodes.noProfile)
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error Saving.'),
+                              ),
+                            );
+                          else if (userProvider.status == StatusCodes.otpError)
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Invalid OTP'),
+                              ),
+                            );
+                          else if (userProvider.status ==
+                              StatusCodes.verificationError)
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Could not verify. Please try again!'),
+                              ),
+                            );
+                        }
+                      },
+                      child: Text('Save'),
+                    ),
                   ),
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text('Cancel'),
-                  ),
-                  BackButton(
-                    onPressed: widget.back,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }

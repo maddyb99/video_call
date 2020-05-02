@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_call/authentication/resource/signUpReq.dart';
+import 'package:provider/provider.dart';
+import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/authentication/ui/login.dart';
 import 'package:video_call/authentication/ui/otp_verify.dart';
 import 'package:video_call/authentication/ui/profileinput.dart';
@@ -12,14 +13,12 @@ class AuthenticationPage extends StatefulWidget {
 
 class _LoginPageState extends State<AuthenticationPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  Authenticate authenticate = Authenticate();
   PageController controller;
 
   @override
   void initState() {
     super.initState();
     getPermissions();
-    authenticate.isSignIn(context);
     controller =
         PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
   }
@@ -63,21 +62,24 @@ class _LoginPageState extends State<AuthenticationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        //appBar: AppBar(title: Text("App"),),
-        body: PageView(
-      controller: controller,
-      pageSnapping: true,
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        Login(signup: nextpage),
-        OTPVerify(
-          phoneNo: 'fsdf',
-          back: backpage,
-          submit:nextpage,
-        ),
-        ProfileInput(back: backpage,),
-      ],
-    ));
+    var userProvider=Provider.of<UserProvider>(context);
+    return ChangeNotifierProvider.value(
+      value: userProvider,
+      child: Scaffold(
+          //appBar: AppBar(title: Text("App"),),
+          body: PageView(
+        controller: controller,
+        pageSnapping: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          Login(signup: nextpage),
+          OTPVerify(
+            back: backpage,
+            submit:nextpage,
+          ),
+          ProfileInput(back: backpage,),
+        ],
+      )),
+    );
   }
 }
