@@ -2,7 +2,7 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 // ignore: must_be_immutable
-class InputField extends StatefulWidget {
+class InputField extends StatelessWidget {
   final String hintText, initailValue;
   final TextInputType inputType;
   final bool isPassword, isSignUp;
@@ -28,7 +28,7 @@ class InputField extends StatefulWidget {
     this.minLines: 1,
     this.maxLines: 2,
     this.inputAction,
-    this.maxLength,
+    this.maxLength:0,
     this.initailValue,
     this.focusNode,
     this.nextTextField,
@@ -40,64 +40,6 @@ class InputField extends StatefulWidget {
   });
 
   @override
-  InputFieldState createState() => InputFieldState(hintText, fn,
-      inputType: inputType,
-      isPassword: isPassword,
-      minLines: minLines,
-      maxLines: maxLines,
-      textCapitalization: textCapitalization,
-      initailValue: initailValue,
-      key: key,
-      focusNode: focusNode,
-      nextTextField: nextTextField,
-      func: func,
-      isSignUp: isSignUp,
-      prefix: prefix,
-      suffix: suffix,
-      elevation: elevation);
-}
-
-class InputFieldState extends State<InputField> {
-  final double elevation;
-  final String hintText, initailValue;
-  final TextInputType inputType;
-  final bool isPassword, isSignUp;
-  final void Function(String) fn;
-  final VoidCallback func;
-  final int minLines, maxLines, maxLength;
-  final TextInputAction inputAction;
-  final FocusNode nextTextField, focusNode;
-  static String password;
-  final IconData prefix;
-  final Widget suffix;
-  final GlobalKey<FormState> key;
-  final TextCapitalization textCapitalization;
-  bool obscureText;
-
-  InputFieldState(
-    this.hintText,
-    this.fn, {
-    this.elevation: 2.0,
-    this.key: null,
-    this.textCapitalization,
-    this.inputType: TextInputType.text,
-    this.isPassword: false,
-    this.minLines: 1,
-    this.maxLines: 2,
-    this.inputAction: TextInputAction.next,
-    this.maxLength: 0,
-    this.initailValue: '',
-    this.focusNode,
-    this.nextTextField,
-    this.func,
-    this.isSignUp = false,
-    this.prefix = null,
-    this.suffix,
-  }) {
-    obscureText = isPassword;
-  }
-
-  @override
   Widget build(BuildContext context) {
 //    print(elevation);
     return Material(
@@ -106,7 +48,7 @@ class InputFieldState extends State<InputField> {
       child: TextFormField(
         textCapitalization: textCapitalization,
         key: key,
-        obscureText: obscureText,
+        obscureText: isPassword,
         focusNode: focusNode,
         initialValue: initailValue,
         textInputAction: inputAction,
@@ -123,22 +65,7 @@ class InputFieldState extends State<InputField> {
                   prefix,
                   size: 20,
                 ),
-          suffixIcon: isPassword
-              ? GestureDetector(
-                  onLongPressStart: (d) {
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                  onLongPressEnd: (f) {
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                  child:
-                      Icon(obscureText ? Icons.remove_red_eye : Icons.remove),
-                )
-              : suffix,
+          suffixIcon:  suffix,
         ),
         validator: (value) {
           if (value.isEmpty) {
