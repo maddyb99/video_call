@@ -4,6 +4,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:video_call/common/private/agora_sdk_constants.dart';
 import 'package:video_call/common/ui/floating_action_button.dart';
 import 'package:video_call/common/userData.dart';
 import 'package:video_call/video_call/ui/bottom_buttons.dart';
@@ -134,7 +135,7 @@ class _StartVideoState extends State<StartVideo> {
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    AgoraRtcEngine.create('YOUR-APP-ID');
+    AgoraRtcEngine.create(AgoraSdkInfo.appId);
     AgoraRtcEngine.enableVideo();
     AgoraRtcEngine.setChannelProfile(ChannelProfile.Communication);
   }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:video_call/common/model/user.dart';
-import 'package:video_call/common/private/privateConstants.dart';
+import 'package:video_call/common/private/web_api_constants.dart';
 
 class UserRepo {
   static Future<void> createUser(User data) async {
