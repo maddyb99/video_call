@@ -8,6 +8,8 @@
 .buildlog/
 .history
 .svn/
+.metadata
+.flutter-plugins-dependencies
 lib/common/private/
 android/app/google-services.json
 
