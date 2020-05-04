@@ -8,14 +8,19 @@ Anyone with a little experience in Flutter can set this up and start developing 
 
 **This setup will involve 4 basic steps:**
 
-- Clone this repository:
+1. Clone this repository:
     ```
-    git clone <https://github.com/maddyb99/video_call> 
+    $ git clone <https://github.com/maddyb99/video_call>
+    $ cd video_call 
+    $ flutter pub get 
     ```
 
-- **Add firebase** to this flutter project. Steps to do this can be found in this [official guide](https://firebase.google.com/docs/flutter/setup).
+2. **Add firebase** to this flutter project. Steps to do this can be
+   found in this
+   [official guide](https://firebase.google.com/docs/flutter/setup).
 
-- Connect this to a **REST API** that manages user data. For this, find the API URL and Private Key and modify the following:
+ 3. Connect this to a **REST API** that manages user data. For this,
+    find the API URL and Private Key and modify the following:
 
     1. Rename `lib/common/public` to `lib/common/private` (private folder will not be committed to git)
     2. Modify `lib/common/private/web_api_constants.dart` and add your API URL and Private Key to it.
@@ -27,17 +32,19 @@ Anyone with a little experience in Flutter can set this up and start developing 
           static get apiUrl => "$baseUrl/$ver";
         }
         ```
-    3. (OPTIONAL)Make other modifications to `lib/common/repository/user_repository.dart` and `lib/common/models/user.dart` in accordance with your API
-    4. (ONLY IF STEP 3 WAS PERFORMED) Run:
+    3. *(IF-REQUIRED)* Make other modifications to `lib/common/repository/user_repository.dart` and `lib/common/models/user.dart` in accordance with your API and then run:
         ```
         flutter packages pub run build_runner build
         ```
 
-- Copy your **Agora Project App ID** and replace `YOUR-APP-ID` in `lib/common/private/agora_sdk_constants.dart` with the App ID
+4. Copy your **Agora Project App ID** and replace `YOUR-APP-ID` in
+   `lib/common/private/agora_sdk_constants.dart` with the App ID
     ```
     class AgoraSdkInfo{
-      static get appId=>'YOUR-APP-ID';
+    static get appId=>'YOUR-APP-ID';
     }
     ```
-    If you cannot find the private folder, refer step 1 of adding REST API Keys.
-    If you are new to Agora, you can create a new project by following this [official guide](https://docs.agora.io/en/Agora%20Platform/manage_projects?platform=All%20Platforms).
+    If you cannot find the private folder, refer step 3(i)
+
+    If you are new to Agora, you can create a new project by following this
+    [official guide](https://docs.agora.io/en/Agora%20Platform/manage_projects?platform=All%20Platforms).
