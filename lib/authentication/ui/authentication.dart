@@ -27,19 +27,11 @@ class _LoginPageState extends State<AuthenticationPage> {
     List<PermissionGroup> permission = [
       PermissionGroup.camera,
       PermissionGroup.microphone,
-      PermissionGroup.storage,
+//      PermissionGroup.storage,
       PermissionGroup.contacts
     ];
     Map<PermissionGroup, PermissionStatus> permissions =
         await PermissionHandler().requestPermissions(permission);
-    /*permission.forEach((PermissionGroup p)async{
-      PermissionStatus permissionStatus = await PermissionHandler().checkPermissionStatus(p);
-      if(permissionStatus.value==0){
-        bool isShown= await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.contacts);
-        if(!isShown)
-          _ackAlert(context, "Permissions", "The app requires "+p.value.toString()+" permission to function");
-      }
-    });*/
     permissions.forEach((PermissionGroup pg, PermissionStatus ps) {
       print(pg.toString() + " " + ps.toString() + "\n");
     });

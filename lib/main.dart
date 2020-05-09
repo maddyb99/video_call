@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/splash/splash_screen.dart';
 import 'package:video_call/video_call/init.dart';
 
 import 'authentication/ui/authentication.dart';
@@ -21,10 +22,11 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: theme.lightTheme(),
         routes: <String, WidgetBuilder>{
+          '/auth':(BuildContext context) => AuthenticationPage(),
           '/home': (BuildContext context) => HomePage(),
           '/video': (BuildContext context) => StartVideo(),
         },
-        home: AuthenticationPage(),
+        home: SplashScreen(),
       ),
     );
   }

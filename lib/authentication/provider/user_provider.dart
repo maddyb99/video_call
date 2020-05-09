@@ -6,8 +6,7 @@ import 'package:video_call/common/userData.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProvider() {
-    clear(notify: false);
-    signInStat();
+   loadData();
   }
 
   FirebaseUser firebaseUser;
@@ -15,24 +14,25 @@ class UserProvider extends ChangeNotifier {
   User user;
 
   loadData() {
-    _status = 'NOTIN';
-    signInStat();
+    clear(notify: false);
+    _status = StatusCodes.loginInProgress;
+    signInStatus();
   }
 
   String get status => _status;
 
   String get phoneNum => _phoneNum;
 
-  Future<bool> signInStat({FirebaseUser verify}) async {
+  Future<bool> signInStatus({FirebaseUser verify}) async {
     firebaseUser = await FirebaseAuth.instance.currentUser();
     if (verify != null && firebaseUser.uid != verify.uid) {
-      _status = 'NOTIN';
+      _status = StatusCodes.logInFailure;
       notifyListeners();
       return false;
     }
     try {
       if (firebaseUser == null) {
-        _status = StatusCodes.notLoggedIn;
+        _status = StatusCodes.logInFailure;
         notifyListeners();
         return false;
       } else {
@@ -79,7 +79,7 @@ class UserProvider extends ChangeNotifier {
       return;
     });
     if(status!=StatusCodes.otpError)
-    await signInStat(verify: _authResult.user);
+    await signInStatus(verify: _authResult.user);
   }
 
   Future<bool> updateUser(String name)async{
@@ -119,7 +119,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> signInAutoOTP(String countryCode, String mobile) async {
     print(countryCode);
     print(mobile);
-    _phoneNum = (countryCode+' '+mobile);
+    _phoneNum = (countryCode+mobile);
     notifyListeners();
     try {
       PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
@@ -138,7 +138,7 @@ class UserProvider extends ChangeNotifier {
             .signInWithCredential(auth)
             .then((AuthResult value) async {
           if (value.user != null)
-            await signInStat();
+            await signInStatus();
           else {
             _status = StatusCodes.verificationError;
           }
@@ -174,6 +174,7 @@ class StatusCodes{
   static get waitOtp=>'WAITOTP';
   static get otpError=>'WRONGOTP';
   static get verificationError=>'UNKNOWNERROR';
-  static get notLoggedIn=>'NOTIN';
+  static get logInFailure=>'NOTIN';
+  static get loginInProgress=>'INPROGRESS';
 
 }

@@ -20,10 +20,10 @@ class Contacts {
         contacts.add(contact);
     });
 //    contacts=tmp;
-    return;
     await reduceContacts();
     print(contacts);
     print(contacts.length);
+    return;
   }
 
   Future<void> reduceContacts() async {

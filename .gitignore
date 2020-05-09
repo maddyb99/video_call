@@ -12,6 +12,7 @@
 .flutter-plugins-dependencies
 lib/common/private/
 android/app/google-services.json
+pubspec.lock
 
 # IntelliJ related
 *.iml
