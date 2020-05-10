@@ -5,13 +5,13 @@ import 'package:video_call/common/ui/customFields.dart';
 
 class ProfileInput extends StatelessWidget {
   final Function back;
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  String name, mobile, profilePhoto;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   ProfileInput({this.back});
 
   @override
   Widget build(BuildContext context) {
+    String name, profilePhoto;
     var userProvider = Provider.of<UserProvider>(context);
     return ChangeNotifierProvider.value(
       value: userProvider,
@@ -64,24 +64,26 @@ class ProfileInput extends StatelessWidget {
                         if (formState.validate()) {
                           formState.save();
                           await userProvider.updateUser(name);
-                          if (userProvider.status == StatusCodes.loggedIn) {
+                          if (userProvider.status == UserStatusCodes.loggedIn) {
                             print("im in");
-                            Navigator.of(context).pushNamedAndRemoveUntil('/home', ModalRoute.withName(':'));
-                          }
-                          else if (userProvider.status == StatusCodes.noProfile)
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/home', ModalRoute.withName(':'));
+                          } else if (userProvider.status ==
+                              UserStatusCodes.noProfile)
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Error Saving.'),
                               ),
                             );
-                          else if (userProvider.status == StatusCodes.otpError)
+                          else if (userProvider.status ==
+                              UserStatusCodes.otpError)
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Invalid OTP'),
                               ),
                             );
                           else if (userProvider.status ==
-                              StatusCodes.verificationError)
+                              UserStatusCodes.verificationError)
                             Scaffold.of(context).showSnackBar(
                               SnackBar(
                                 content:

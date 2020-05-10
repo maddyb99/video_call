@@ -14,7 +14,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final VoidCallback signup;
-  String countryCode,mobile ;
+  String countryCode, mobile;
 
   _LoginState({this.signup});
 
@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    var userProvider=Provider.of<UserProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Center(
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                                   });
                                 },
                                 value: countryCode,
-                                onSaved: (v) => countryCode=v,
+                                onSaved: (v) => countryCode = v,
                                 decoration: InputDecoration(
                                   icon: Icon(
                                     Icons.phone,
@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
                               width: 179,
                               child: InputField(
                                 "Mobile",
-                                (String s) => mobile=s,
+                                (String s) => mobile = s,
                                 inputType: TextInputType.phone,
                                 prefix: null,
                               ),
@@ -105,9 +105,9 @@ class _LoginState extends State<Login> {
                 ),
               ),
               MaterialButton(
-                onPressed: ()async {
-                  FormState formState=formKey.currentState;
-                  if(formState.validate()){
+                onPressed: () async {
+                  FormState formState = formKey.currentState;
+                  if (formState.validate()) {
                     formState.save();
                     userProvider.signInAutoOTP(countryCode, mobile);
                     signup();

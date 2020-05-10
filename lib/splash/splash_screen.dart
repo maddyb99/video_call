@@ -9,14 +9,14 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 //    sizeConfig.init(context);
     var userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.status != StatusCodes.loginInProgress) {
-      if (userProvider.status == StatusCodes.loggedIn) {
+    if (userProvider.status != UserStatusCodes.loginInProgress) {
+      if (userProvider.status == UserStatusCodes.loggedIn) {
         Future.delayed(Duration.zero, () {
           Navigator.pushNamedAndRemoveUntil(
               context, '/home', ModalRoute.withName(':'),
               arguments: userProvider);
         });
-      } else if (userProvider.status == StatusCodes.logInFailure) {
+      } else {
         Future.delayed(
           Duration(seconds: 2),
         ).then((val) {

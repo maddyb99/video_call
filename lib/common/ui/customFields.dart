@@ -28,7 +28,7 @@ class InputField extends StatelessWidget {
     this.minLines: 1,
     this.maxLines: 2,
     this.inputAction,
-    this.maxLength:0,
+    this.maxLength: 0,
     this.initailValue,
     this.focusNode,
     this.nextTextField,
@@ -65,7 +65,7 @@ class InputField extends StatelessWidget {
                   prefix,
                   size: 20,
                 ),
-          suffixIcon:  suffix,
+          suffixIcon: suffix,
         ),
         validator: (value) {
           if (value.isEmpty) {

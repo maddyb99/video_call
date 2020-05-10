@@ -427,7 +427,7 @@ class _StartVideoState extends State<StartVideo> {
     return _sessions.map((session) => session.view).toList();
   }
 
-  static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
+//  static TextStyle textStyle = TextStyle(fontSize: 18, color: Colors.blue);
 
 //  Widget _buildInfoList() {
 //    return ListView.builder(

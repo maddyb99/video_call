@@ -6,16 +6,17 @@ import 'package:video_call/common/userData.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProvider() {
-   loadData();
+    loadData();
   }
 
   FirebaseUser firebaseUser;
   String _verificationId, _status, _phoneNum;
+  int _timeOut = 30;
   User user;
 
   loadData() {
     clear(notify: false);
-    _status = StatusCodes.loginInProgress;
+    _status = UserStatusCodes.loginInProgress;
     signInStatus();
   }
 
@@ -23,24 +24,29 @@ class UserProvider extends ChangeNotifier {
 
   String get phoneNum => _phoneNum;
 
+  int get timeOut => _timeOut;
+
   Future<bool> signInStatus({FirebaseUser verify}) async {
     firebaseUser = await FirebaseAuth.instance.currentUser();
     if (verify != null && firebaseUser.uid != verify.uid) {
-      _status = StatusCodes.logInFailure;
+      _status = UserStatusCodes.logInFailure;
+      print(_status);
       notifyListeners();
       return false;
     }
     try {
       if (firebaseUser == null) {
-        _status = StatusCodes.logInFailure;
+        _status = UserStatusCodes.logInFailure;
+        print(_status);
         notifyListeners();
         return false;
       } else {
         if (await fetchUserData())
-          _status = StatusCodes.loggedIn;
+          _status = UserStatusCodes.loggedIn;
         else
-          _status = StatusCodes.noProfile;
-        print(_status);
+          _status = UserStatusCodes.noProfile;
+        _phoneNum = firebaseUser.phoneNumber;
+        print(_phoneNum);
         notifyListeners();
         return true;
       }
@@ -62,7 +68,7 @@ class UserProvider extends ChangeNotifier {
   void clear({bool notify = true}) {
     firebaseUser = null;
     user = null;
-    _status = null;
+    _status = UserStatusCodes.initState;
     if (notify) notifyListeners();
   }
 
@@ -74,44 +80,46 @@ class UserProvider extends ChangeNotifier {
     AuthResult _authResult = await FirebaseAuth.instance
         .signInWithCredential(_authCredential)
         .catchError((error) {
-      _status = StatusCodes.otpError;
+      _status = UserStatusCodes.otpError;
+      print(_status);
       notifyListeners();
       return;
     });
-    if(status!=StatusCodes.otpError)
-    await signInStatus(verify: _authResult.user);
+    if (status != UserStatusCodes.otpError)
+      await signInStatus(verify: _authResult.user);
   }
 
-  Future<bool> updateUser(String name)async{
+  Future<bool> updateUser(String name) async {
     User tempUser;
-    bool ret=false;
+    bool ret = false;
     print(phoneNum);
-    tempUser=User(
+    tempUser = User(
       name: name,
       mobile: int.parse(phoneNum),
       uid: firebaseUser.uid,
       profilePic: '',
     );
-    if(status==StatusCodes.noProfile)
-    try{
-      await UserRepo.createUser(tempUser);
-      user=tempUser;
-      _status=StatusCodes.loggedIn;
-      ret=true;
-    }catch(e){
-      print(e);
-    }
-    else{
+    if (status == UserStatusCodes.noProfile)
+      try {
+        await UserRepo.createUser(tempUser);
+        user = tempUser;
+        _status = UserStatusCodes.loggedIn;
+        ret = true;
+      } catch (e) {
+        print(e);
+      }
+    else {
       try {
         await UserRepo.updateUser(tempUser);
-        user=tempUser;
-        if(_status!=StatusCodes.loggedIn)
-        _status=StatusCodes.loggedIn;
-        ret=true;
-      }  catch (e) {
+        user = tempUser;
+        if (_status != UserStatusCodes.loggedIn)
+          _status = UserStatusCodes.loggedIn;
+        ret = true;
+      } catch (e) {
         print(e);
       }
     }
+    print(_status);
     notifyListeners();
     return ret;
   }
@@ -119,17 +127,19 @@ class UserProvider extends ChangeNotifier {
   Future<void> signInAutoOTP(String countryCode, String mobile) async {
     print(countryCode);
     print(mobile);
-    _phoneNum = (countryCode+mobile);
-    notifyListeners();
+    _phoneNum = (countryCode + mobile);
+    print(_phoneNum);
+//    notifyListeners();
     try {
       PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
         this._verificationId = verID;
-        _status=StatusCodes.waitOtp;
+        _status = UserStatusCodes.waitOtp;
         print('Code sent to $mobile');
       };
       PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
         this._verificationId = verID;
-        _status = StatusCodes.timeOut;
+        _status = UserStatusCodes.timeOut;
+        print(_status);
         notifyListeners();
       };
       final PhoneVerificationCompleted verificationCompleted =
@@ -140,25 +150,27 @@ class UserProvider extends ChangeNotifier {
           if (value.user != null)
             await signInStatus();
           else {
-            _status = StatusCodes.verificationError;
+            _status = UserStatusCodes.verificationError;
           }
         }).catchError((error) {
-          _status = StatusCodes.verificationError;
+          _status = UserStatusCodes.verificationError;
         });
       };
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: countryCode + mobile,
-        timeout: Duration(seconds: 60),
+        phoneNumber: _phoneNum,
+        timeout: Duration(seconds: _timeOut),
         verificationCompleted: verificationCompleted,
         verificationFailed: (exp) {
-          _status = StatusCodes.verificationError;
+          print(exp.message);
+          _status = UserStatusCodes.verificationError;
+          print(_status);
           notifyListeners();
         },
         codeSent: codeSent,
         codeAutoRetrievalTimeout: autoRetrievalTimeout,
       );
 //      UserData.profileData = await FirebaseAuth.instance.currentUser();
-      print(UserData.profileData.toString());
+      print("here" + UserData.profileData.toString());
     } catch (e) {
       throw e == "Verify"
           ? "Verify email and then signIn"
@@ -167,14 +179,14 @@ class UserProvider extends ChangeNotifier {
   }
 }
 
-class StatusCodes{
-  static get timeOut=>'TIMEOUT';
-  static get loggedIn=>'LOGGEDIN';
-  static get noProfile=>'NOPROFILE';
-  static get waitOtp=>'WAITOTP';
-  static get otpError=>'WRONGOTP';
-  static get verificationError=>'UNKNOWNERROR';
-  static get logInFailure=>'NOTIN';
-  static get loginInProgress=>'INPROGRESS';
-
+class UserStatusCodes {
+  static get initState => 'INIT';
+  static get timeOut => 'TIMEOUT';
+  static get loggedIn => 'LOGGEDIN';
+  static get noProfile => 'NOPROFILE';
+  static get waitOtp => 'WAITOTP';
+  static get otpError => 'WRONGOTP';
+  static get verificationError => 'UNKNOWNERROR';
+  static get logInFailure => 'NOTIN';
+  static get loginInProgress => 'INPROGRESS';
 }

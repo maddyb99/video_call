@@ -8,7 +8,7 @@ import 'package:video_call/common/ui/customFields.dart';
 class OTPVerify extends StatefulWidget {
   final Function back, submit;
 
-  OTPVerify({ this.back, this.submit});
+  OTPVerify({this.back, this.submit});
 
   @override
   _OTPVerifyState createState() => _OTPVerifyState();
@@ -18,7 +18,7 @@ class _OTPVerifyState extends State<OTPVerify> {
   int time = 60, origtime = 60;
   Timer timer;
   bool enableResend;
-  String smsCode,phoneNum;
+  String smsCode, phoneNum;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   void startTimer() {
@@ -54,7 +54,7 @@ class _OTPVerifyState extends State<OTPVerify> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
-    phoneNum=userProvider.phoneNum;
+    phoneNum = userProvider.phoneNum;
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: LayoutBuilder(
@@ -92,7 +92,7 @@ class _OTPVerifyState extends State<OTPVerify> {
                     FlatButton(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       padding: EdgeInsets.all(0),
-                      onPressed: userProvider.status!=StatusCodes.waitOtp
+                      onPressed: userProvider.status != UserStatusCodes.waitOtp
                           ? () {
                               setState(() {
                                 origtime += 60;
@@ -106,30 +106,38 @@ class _OTPVerifyState extends State<OTPVerify> {
                     ),
                     MaterialButton(
                       color: Colors.green[400],
-                      onPressed: userProvider.status != StatusCodes.waitOtp && userProvider.status!=null
-                          ? () async {
-                              FormState formState = formKey.currentState;
-                              if (formState.validate()) {
-                                formState.save();
-                                print(smsCode);
-                                await userProvider.signInManOTP(smsCode);
-                                if (userProvider.status == StatusCodes.noProfile|| userProvider.status==StatusCodes.loggedIn)
-                                  widget.submit();
-                                else if(userProvider.status==StatusCodes.otpError)
-                                  Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Invalid OTP'),
-                                    ),
-                                  );
-                                else if(userProvider.status==StatusCodes.verificationError)
-                                  Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Could not verify. Please try again!'),
-                                    ),
-                                  );
-                              }
-                            }
-                          : null,
+                      onPressed:
+                          userProvider.status != UserStatusCodes.waitOtp &&
+                                  userProvider.status != null
+                              ? () async {
+                                  FormState formState = formKey.currentState;
+                                  if (formState.validate()) {
+                                    formState.save();
+                                    print(smsCode);
+                                    await userProvider.signInManOTP(smsCode);
+                                    if (userProvider.status ==
+                                            UserStatusCodes.noProfile ||
+                                        userProvider.status ==
+                                            UserStatusCodes.loggedIn)
+                                      widget.submit();
+                                    else if (userProvider.status ==
+                                        UserStatusCodes.otpError)
+                                      Scaffold.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Invalid OTP'),
+                                        ),
+                                      );
+                                    else if (userProvider.status ==
+                                        UserStatusCodes.verificationError)
+                                      Scaffold.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Could not verify. Please try again!'),
+                                        ),
+                                      );
+                                  }
+                                }
+                              : null,
                       child: Text('Submit'),
                     ),
                   ],

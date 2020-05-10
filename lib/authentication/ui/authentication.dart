@@ -19,8 +19,6 @@ class _LoginPageState extends State<AuthenticationPage> {
   void initState() {
     super.initState();
     getPermissions();
-    controller =
-        PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
   }
 
   Future<void> getPermissions() async {
@@ -44,17 +42,24 @@ class _LoginPageState extends State<AuthenticationPage> {
             duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       });
   }
+
   void nextpage() {
     if (controller.page.round() != 2)
       setState(() {
-        controller.animateToPage(controller.page.round()+1,
+        controller.animateToPage(controller.page.round() + 1,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       });
   }
 
   @override
   Widget build(BuildContext context) {
-    var userProvider=Provider.of<UserProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+    if (userProvider.status == UserStatusCodes.noProfile)
+      controller =
+          PageController(initialPage: 2, keepPage: true, viewportFraction: 1);
+    else
+      controller =
+          PageController(initialPage: 0, keepPage: true, viewportFraction: 1);
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Scaffold(
@@ -67,9 +72,11 @@ class _LoginPageState extends State<AuthenticationPage> {
           Login(signup: nextpage),
           OTPVerify(
             back: backpage,
-            submit:nextpage,
+            submit: nextpage,
           ),
-          ProfileInput(back: backpage,),
+          ProfileInput(
+            back: backpage,
+          ),
         ],
       )),
     );

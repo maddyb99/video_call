@@ -1,3 +1,3 @@
-class AgoraSdkInfo{
-  static get appId=>'YOUR-APP-ID';
+class AgoraSdkInfo {
+  static get appId => 'YOUR-APP-ID';
 }
