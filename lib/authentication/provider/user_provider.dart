@@ -7,6 +7,7 @@ import 'package:video_call/common/userData.dart';
 class UserProvider extends ChangeNotifier {
   UserProvider() {
     loadData();
+//  _status=UserStatusCodes.logInFailure;
   }
 
   FirebaseUser firebaseUser;
@@ -17,6 +18,7 @@ class UserProvider extends ChangeNotifier {
   loadData() {
     clear(notify: false);
     _status = UserStatusCodes.loginInProgress;
+    print(status);
     signInStatus();
   }
 
@@ -46,7 +48,7 @@ class UserProvider extends ChangeNotifier {
         else
           _status = UserStatusCodes.noProfile;
         _phoneNum = firebaseUser.phoneNumber;
-        print(_phoneNum);
+        print(status);
         notifyListeners();
         return true;
       }
@@ -134,6 +136,7 @@ class UserProvider extends ChangeNotifier {
       PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
         this._verificationId = verID;
         _status = UserStatusCodes.waitOtp;
+        notifyListeners();
         print('Code sent to $mobile');
       };
       PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {

@@ -11,18 +11,16 @@ class SplashScreen extends StatelessWidget {
     var userProvider = Provider.of<UserProvider>(context);
     if (userProvider.status != UserStatusCodes.loginInProgress) {
       if (userProvider.status == UserStatusCodes.loggedIn) {
-        Future.delayed(Duration.zero, () {
+        Future.delayed(Duration(seconds: 1), () {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/home', ModalRoute.withName(':'),
-              arguments: userProvider);
+              context, '/home', ModalRoute.withName(':'),);
         });
       } else {
         Future.delayed(
           Duration(seconds: 2),
         ).then((val) {
           Navigator.of(context).pushReplacementNamed(
-            '/auth',
-            arguments: userProvider,
+            '/login',
           );
         });
       }

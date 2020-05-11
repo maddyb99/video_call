@@ -1,5 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:video_call/common/resource/user_repository.dart';
 
 class ContactsProvider extends ChangeNotifier {
@@ -20,16 +21,22 @@ class ContactsProvider extends ChangeNotifier {
     if (notify) notifyListeners();
   }
 
-  void _getContactList() {
+  void _getContactList() async{
+    await getPermissions();
     List<Contact> _contacts = [];
     List<String> _contacts2 = [];
     ContactsService.getContacts().then((value) async {
       value.forEach(
         (contact) {
-          print("DP" + contact.givenName.toString());
-          if (contact.givenName != null && contact.phones.isNotEmpty) {
+//          print("DP" + contact.givenName.toString());
+          if (!contacts.contains(contact)&&contact.givenName != null && contact.phones.isNotEmpty) {
             _contacts.add(contact);
             contact.phones.forEach((element) => _contacts2.add(element.value));
+            if(_contacts2.length>=50){
+              _addNewContacts(_contacts, _contacts2);
+              _contacts2.clear();
+              _contacts.clear();
+            }
 //            _contacts2.add(value)
           }
         },
@@ -61,5 +68,19 @@ class ContactsProvider extends ChangeNotifier {
 //      print("final: "+finalContacts.length.toString());
     }
     return;
+  }
+
+  Future<void> getPermissions() async {
+    List<PermissionGroup> permission = [
+//      PermissionGroup.camera,
+//      PermissionGroup.microphone,
+//      PermissionGroup.storage,
+      PermissionGroup.contacts
+    ];
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions(permission);
+    permissions.forEach((PermissionGroup pg, PermissionStatus ps) {
+      print(pg.toString() + " " + ps.toString() + "\n");
+    });
   }
 }

@@ -69,13 +69,10 @@ class _LoginPageState extends State<AuthenticationPage> {
         pageSnapping: true,
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
-          Login(signup: nextpage),
+          Login(),
           OTPVerify(
-            back: backpage,
-            submit: nextpage,
           ),
           ProfileInput(
-            back: backpage,
           ),
         ],
       )),
