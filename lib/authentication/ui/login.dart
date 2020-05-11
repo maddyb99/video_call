@@ -13,6 +13,7 @@ class _LoginState extends State<Login> {
   String countryCode, mobile;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +26,18 @@ class _LoginState extends State<Login> {
           ),
         ),
       );
+    else if (scaffoldKey.currentState!=null&&(userProvider.status == UserStatusCodes.logInFailure ||
+        userProvider.status == UserStatusCodes.otpError ||
+        userProvider.status == UserStatusCodes.verificationError))
+      scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Unknown Error'),
+        ),
+      );
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Scaffold(
+        key: scaffoldKey,
         body: Center(
           child: SingleChildScrollView(
             child: Column(

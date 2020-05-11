@@ -10,7 +10,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   FirebaseUser firebaseUser;
-  String _verificationId, _status, _phoneNum;
+  String _verificationId, _status, _phoneNum,_countryCode;
   int _timeOut = 30;
   User user;
 
@@ -23,7 +23,9 @@ class UserProvider extends ChangeNotifier {
 
   String get status => _status;
 
-  String get phoneNum => _phoneNum;
+  String get phoneNum => _countryCode+_phoneNum;
+
+  String get prettyPhoneNum=> '$_countryCode ${_phoneNum.substring(0,5)} ${_phoneNum.substring(5)}';
 
   int get timeOut => _timeOut;
 
@@ -128,7 +130,8 @@ class UserProvider extends ChangeNotifier {
   Future<void> signInAutoOTP(String countryCode, String mobile) async {
     print(countryCode);
     print(mobile);
-    _phoneNum = (countryCode + mobile);
+    _phoneNum = mobile;
+    _countryCode=countryCode;
     print(_phoneNum);
 //    notifyListeners();
     try {
@@ -159,7 +162,7 @@ class UserProvider extends ChangeNotifier {
         });
       };
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _phoneNum,
+        phoneNumber: phoneNum,
         timeout: Duration(seconds: _timeOut),
         verificationCompleted: verificationCompleted,
         verificationFailed: (exp) {

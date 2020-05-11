@@ -12,7 +12,7 @@ class ProfileInput extends StatelessWidget {
     var userProvider = Provider.of<UserProvider>(context);
     if (userProvider.status == UserStatusCodes.loggedIn) {
       print("im in");
-      Future.delayed(Duration(seconds: 5)).then(
+      Future.delayed(Duration(seconds: 1)).then(
         (value) => Navigator.of(context).pushNamedAndRemoveUntil(
           '/home',
           ModalRoute.withName(':'),

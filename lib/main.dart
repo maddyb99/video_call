@@ -5,8 +5,6 @@ import 'package:video_call/authentication/ui/login.dart';
 import 'package:video_call/home_page/provider/contacts_provider.dart';
 import 'package:video_call/splash/splash_screen.dart';
 import 'package:video_call/video_call/init.dart';
-
-import 'authentication/ui/authentication.dart';
 import 'common/theme.dart';
 import 'home_page/ui/home_page.dart';
 
@@ -25,7 +23,6 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: theme.lightTheme(),
         routes: <String, WidgetBuilder>{
-          '/auth': (BuildContext context) => AuthenticationPage(),
           '/login': (BuildContext context) => Login(),
           '/home': (BuildContext context) => HomePage(),
           '/video': (BuildContext context) => StartVideo(),
