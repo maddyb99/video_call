@@ -12,18 +12,19 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String countryCode, mobile;
 
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
-    if(userProvider.status==UserStatusCodes.waitOtp)
-      Future.delayed(Duration(seconds: 1)).then((value) => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => OTPVerify(),
+    if (userProvider.status == UserStatusCodes.waitOtp)
+      Future.delayed(Duration(seconds: 1)).then(
+        (value) => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => OTPVerify(),
+          ),
         ),
-      ),);
+      );
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Scaffold(
@@ -48,12 +49,9 @@ class _LoginState extends State<Login> {
                               Container(
                                 width: 100,
                                 child: DropdownButtonFormField<String>(
-                                  items: <String>[
-                                    '+91',
-                                    '+65',
-                                    '+44',
-                                    '+45'
-                                  ].map<DropdownMenuItem<String>>((String value) {
+                                  items: <String>['+91', '+65', '+44', '+45']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Text(value),
@@ -107,7 +105,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: ()  {
+                  onPressed: () {
                     FormState formState = formKey.currentState;
                     if (formState.validate()) {
                       formState.save();

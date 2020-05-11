@@ -13,7 +13,10 @@ class SplashScreen extends StatelessWidget {
       if (userProvider.status == UserStatusCodes.loggedIn) {
         Future.delayed(Duration(seconds: 1), () {
           Navigator.pushNamedAndRemoveUntil(
-              context, '/home', ModalRoute.withName(':'),);
+            context,
+            '/home',
+            ModalRoute.withName(':'),
+          );
         });
       } else {
         Future.delayed(

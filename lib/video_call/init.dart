@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:video_call/common/private/agora_sdk_constants.dart';
 import 'package:video_call/common/ui/floating_action_button.dart';
-import 'package:video_call/common/userData.dart';
 import 'package:video_call/video_call/ui/bottom_buttons.dart';
 
 class StartVideo extends StatefulWidget {
@@ -188,9 +187,8 @@ class _StartVideoState extends State<StartVideo> {
   }
 
   void _toggleChannel() async {
-    print("phone" +
-        (10000000000 - int.parse(UserData.profileData.phoneNumber.substring(3)))
-            .toString());
+    //TODO: insert unique identifier from userdata
+    print("phone" + (10000000000).toString());
     if (_isInChannel) {
       _isInChannel = false;
       AgoraRtcEngine.leaveChannel();
@@ -202,8 +200,8 @@ class _StartVideoState extends State<StartVideo> {
           null,
           "notdemo",
           null,
-          10000000000 -
-              int.parse(UserData.profileData.phoneNumber.substring(3)));
+          //TODO: insert unique identifier from userdata
+          10000000000);
       print(status);
     }
     setState(() {});

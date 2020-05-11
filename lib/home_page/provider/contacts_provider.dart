@@ -21,34 +21,29 @@ class ContactsProvider extends ChangeNotifier {
     if (notify) notifyListeners();
   }
 
-  void _getContactList() async{
+  void _getContactList() async {
     await getPermissions();
     List<Contact> _contacts = [];
     List<String> _contacts2 = [];
     ContactsService.getContacts().then((value) async {
-      value.forEach(
-        (contact) {
+      for (var contact in value) {
 //          print("DP" + contact.givenName.toString());
-          if (!contacts.contains(contact)&&contact.givenName != null && contact.phones.isNotEmpty) {
-            _contacts.add(contact);
-            contact.phones.forEach((element) => _contacts2.add(element.value));
-            if(_contacts2.length>=50){
-              _addNewContacts(_contacts, _contacts2);
-              _contacts2.clear();
-              _contacts.clear();
-            }
-//            _contacts2.add(value)
+        if (!contacts.contains(contact) &&
+            contact.givenName != null &&
+            contact.phones.isNotEmpty) {
+          _contacts.add(contact);
+          contact.phones
+              .forEach((element) => _contacts2.add(element.value.trim()));
+          if (_contacts2.length >= 500) {
+            _addNewContacts(_contacts, _contacts2);
+            _contacts2.clear();
+            _contacts.clear();
+//              break;
           }
-        },
-      );
-      print(_contacts2);
-      _addNewContacts(_contacts, _contacts2);
-//      print(_contacts);
-//      print(_contacts.length);
+        }
+      }
+      if (_contacts.isNotEmpty) _addNewContacts(_contacts, _contacts2);
     });
-//    tmp=contacts.where((c)=>c.displayName!=null&&c.phones.length!=0);
-
-//    contacts=tmp;
     return;
   }
 
@@ -57,28 +52,23 @@ class ContactsProvider extends ChangeNotifier {
     List<dynamic> availContacts =
         await UserRepo.multiUserExist(_contactsString);
     for (var c in _contacts) {
-      print(c.phones);
+//      print(c.phones);
       if (contacts.contains(c)) continue;
       for (var num in c.phones)
         if (availContacts.contains(num.value)) {
           contacts.add(c);
+          print(c.toString());
           notifyListeners();
           break;
         }
-//      print("final: "+finalContacts.length.toString());
     }
     return;
   }
 
   Future<void> getPermissions() async {
-    List<PermissionGroup> permission = [
-//      PermissionGroup.camera,
-//      PermissionGroup.microphone,
-//      PermissionGroup.storage,
-      PermissionGroup.contacts
-    ];
+    List<PermissionGroup> permission = [PermissionGroup.contacts];
     Map<PermissionGroup, PermissionStatus> permissions =
-    await PermissionHandler().requestPermissions(permission);
+        await PermissionHandler().requestPermissions(permission);
     permissions.forEach((PermissionGroup pg, PermissionStatus ps) {
       print(pg.toString() + " " + ps.toString() + "\n");
     });

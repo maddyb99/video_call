@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_call/common/model/user.dart';
 import 'package:video_call/common/resource/user_repository.dart';
-import 'package:video_call/common/userData.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProvider() {
@@ -173,7 +172,7 @@ class UserProvider extends ChangeNotifier {
         codeAutoRetrievalTimeout: autoRetrievalTimeout,
       );
 //      UserData.profileData = await FirebaseAuth.instance.currentUser();
-      print("here" + UserData.profileData.toString());
+//      print("here" + UserData.profileData.toString());
     } catch (e) {
       throw e == "Verify"
           ? "Verify email and then signIn"

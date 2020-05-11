@@ -23,7 +23,7 @@ class UserRepo {
   static Future<List<dynamic>> multiUserExist(List<String> numbers) async {
     print('here i am');
     var body = jsonEncode({'numbers': numbers});
-    print(body);
+//    print(body);
     var response = await http.post(
       "${WebApiInfo.apiUrl}/user/exist/",
       headers: {
@@ -59,7 +59,6 @@ class UserRepo {
       "${WebApiInfo.apiUrl}/user/$uid",
       headers: {'Authorization': WebApiInfo.apiKey},
     );
-//    print(response.body);
     if (jsonDecode(response.body) is bool &&
         (jsonDecode(response.body) as bool) == false) return User();
     return User.fromJson(jsonDecode(response.body));

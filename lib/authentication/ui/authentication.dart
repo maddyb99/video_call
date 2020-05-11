@@ -70,10 +70,8 @@ class _LoginPageState extends State<AuthenticationPage> {
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           Login(),
-          OTPVerify(
-          ),
-          ProfileInput(
-          ),
+          OTPVerify(),
+          ProfileInput(),
         ],
       )),
     );

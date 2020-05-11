@@ -22,7 +22,6 @@ dependencies:
   firebase_core: any
   firebase_auth: any
   firebase_storage: any
-  cloud_firestore: any
   google_sign_in: any
   cloud_functions: ^0.4.0+3
   shared_preferences: ^0.5.3+1
