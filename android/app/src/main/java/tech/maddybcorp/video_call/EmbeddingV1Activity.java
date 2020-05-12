@@ -1,14 +1,13 @@
-package io.flutter.plugins.firebase.messaging;
+package io.flutter.plugins.firebasemessagingexample;
 
-import androidx.test.rule.ActivityTestRule;
-import dev.flutter.plugins.e2e.FlutterRunner;
-import io.flutter.plugins.firebasemessagingexample.EmbeddingV1Activity;
-import org.junit.Rule;
-import org.junit.runner.RunWith;
+import android.os.Bundle;
+import io.flutter.app.FlutterActivity;
+import io.flutter.plugins.GeneratedPluginRegistrant;
 
-@RunWith(FlutterRunner.class)
-public class EmbeddingV1ActivityTest {
-    @Rule
-    public ActivityTestRule<EmbeddingV1Activity> rule =
-            new ActivityTestRule<>(EmbeddingV1Activity.class);
+public class EmbeddingV1Activity extends FlutterActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GeneratedPluginRegistrant.registerWith(this);
+    }
 }
