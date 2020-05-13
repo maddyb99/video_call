@@ -10,26 +10,43 @@ class UserProvider extends ChangeNotifier {
   }
 
   FirebaseUser firebaseUser;
-  String _verificationId, _status, _phoneNum,_countryCode;
+  String _verificationId, _status, _phoneNum, _countryCode;
   int _timeOut = 30;
   User user;
 
   loadData() {
     clear(notify: false);
     _status = UserStatusCodes.loginInProgress;
+    countryCode='+91';
     print(status);
-    signInStatus();
+    autoLogin();
   }
+
+  set countryCode(String code) {
+    _countryCode = code;
+    notifyListeners();
+  }
+
+  String get countryCode => _countryCode;
 
   String get status => _status;
 
-  String get phoneNum => _countryCode+_phoneNum;
+  String get phoneNum => _countryCode + _phoneNum;
 
-  String get prettyPhoneNum=> '$_countryCode ${_phoneNum.substring(0,5)} ${_phoneNum.substring(5)}';
+  String get prettyPhoneNum =>
+      '$_countryCode ${_phoneNum.substring(0, 5)} ${_phoneNum.substring(5)}';
 
-  int get timeOut => _timeOut;
+  int get timeOut => _status==UserStatusCodes.timeOut?0:_timeOut;
 
-  Future<bool> signInStatus({FirebaseUser verify}) async {
+  Future<void> autoLogin() async {
+    await signInStatus(notify: false);
+    if (_status == UserStatusCodes.logInFailure)
+      _status = UserStatusCodes.initState;
+    notifyListeners();
+    return;
+  }
+
+  Future<bool> signInStatus({FirebaseUser verify, bool notify: true}) async {
     firebaseUser = await FirebaseAuth.instance.currentUser();
     if (verify != null && firebaseUser.uid != verify.uid) {
       _status = UserStatusCodes.logInFailure;
@@ -41,7 +58,7 @@ class UserProvider extends ChangeNotifier {
       if (firebaseUser == null) {
         _status = UserStatusCodes.logInFailure;
         print(_status);
-        notifyListeners();
+        if (notify) notifyListeners();
         return false;
       } else {
         if (await fetchUserData())
@@ -50,7 +67,7 @@ class UserProvider extends ChangeNotifier {
           _status = UserStatusCodes.noProfile;
         _phoneNum = firebaseUser.phoneNumber;
         print(status);
-        notifyListeners();
+        if (notify) notifyListeners();
         return true;
       }
     } catch (e) {
@@ -127,11 +144,11 @@ class UserProvider extends ChangeNotifier {
     return ret;
   }
 
-  Future<void> signInAutoOTP(String countryCode, String mobile) async {
+  Future<void> signInAutoOTP({String mobile}) async {
     print(countryCode);
     print(mobile);
-    _phoneNum = mobile;
-    _countryCode=countryCode;
+    _phoneNum = mobile==null?_phoneNum:mobile;
+//    _countryCode=countryCode;
     print(_phoneNum);
 //    notifyListeners();
     try {
@@ -177,21 +194,27 @@ class UserProvider extends ChangeNotifier {
 //      UserData.profileData = await FirebaseAuth.instance.currentUser();
 //      print("here" + UserData.profileData.toString());
     } catch (e) {
-      throw e == "Verify"
-          ? "Verify email and then signIn"
-          : e.toString().split(',')[1];
+      throw e ;
     }
   }
 }
 
 class UserStatusCodes {
   static get initState => 'INIT';
+
   static get timeOut => 'TIMEOUT';
+
   static get loggedIn => 'LOGGEDIN';
+
   static get noProfile => 'NOPROFILE';
+
   static get waitOtp => 'WAITOTP';
+
   static get otpError => 'WRONGOTP';
+
   static get verificationError => 'UNKNOWNERROR';
+
   static get logInFailure => 'NOTIN';
+
   static get loginInProgress => 'INPROGRESS';
 }

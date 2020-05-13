@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/authentication/ui/country_picker.dart';
 import 'package:video_call/authentication/ui/otp_verify.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
-class Login extends StatefulWidget {
-  @override
-  _LoginState createState() => _LoginState();
-}
+class Login extends StatelessWidget {
 
-class _LoginState extends State<Login> {
-  String countryCode, mobile;
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    String mobile;
     var userProvider = Provider.of<UserProvider>(context);
     if (userProvider.status == UserStatusCodes.waitOtp)
       Future.delayed(Duration(seconds: 1)).then(
@@ -56,32 +52,7 @@ class _LoginState extends State<Login> {
 
                           Row(
                             children: <Widget>[
-                              Container(
-                                width: 100,
-                                child: DropdownButtonFormField<String>(
-                                  items: <String>['+91', '+65', '+44', '+45']
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (v) {
-                                    setState(() {
-                                      countryCode = v;
-                                    });
-                                  },
-                                  value: countryCode,
-                                  onSaved: (v) => countryCode = v,
-                                  decoration: InputDecoration(
-                                    icon: Icon(
-                                      Icons.phone,
-                                    ),
-                                    contentPadding: EdgeInsets.all(0.0),
-                                  ),
-                                ),
-                              ),
+                              CountryPicker(),
                               Container(
                                 width: 179,
                                 child: InputField(
@@ -119,7 +90,7 @@ class _LoginState extends State<Login> {
                     FormState formState = formKey.currentState;
                     if (formState.validate()) {
                       formState.save();
-                      userProvider.signInAutoOTP(countryCode, mobile);
+                      userProvider.signInAutoOTP(mobile: mobile);
                     }
                   },
                   child: Text("Sign in"),
