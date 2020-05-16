@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:video_call/authentication/provider/country_codes_const.dart';
 import 'package:video_call/common/model/user.dart';
 import 'package:video_call/common/resource/user_repository.dart';
 
@@ -16,15 +17,27 @@ class UserProvider extends ChangeNotifier {
 
   loadData() {
     clear(notify: false);
-    _status = UserStatusCodes.loginInProgress;
-    countryCode='+91';
+    _status = UserStatus.loginInProgress;
+    countryCode = '+91';
     print(status);
     autoLogin();
   }
 
   set countryCode(String code) {
     _countryCode = code;
-    notifyListeners();
+//    notifyListeners();
+  }
+
+  set phoneNum(String num){
+    if(num.startsWith('+'))
+      for (var code in countryCodes){
+        if(num.startsWith(code['dial_code'])){
+          countryCode=code['dial_code'];
+          _phoneNum=phoneNum.substring(countryCode.length);
+        }
+      }
+    else
+      _phoneNum=num;
   }
 
   String get countryCode => _countryCode;
@@ -36,36 +49,37 @@ class UserProvider extends ChangeNotifier {
   String get prettyPhoneNum =>
       '$_countryCode ${_phoneNum.substring(0, 5)} ${_phoneNum.substring(5)}';
 
-  int get timeOut => _status==UserStatusCodes.timeOut?0:_timeOut;
+  int get timeOut => _status == UserStatus.timedOut ? 0 : _timeOut;
 
   Future<void> autoLogin() async {
     await signInStatus(notify: false);
-    if (_status == UserStatusCodes.logInFailure)
-      _status = UserStatusCodes.initState;
+    if (_status == UserStatus.logInFailure) _status = UserStatus.initialState;
     notifyListeners();
     return;
   }
 
   Future<bool> signInStatus({FirebaseUser verify, bool notify: true}) async {
+    bool isAutoLogin = (verify == null);
     firebaseUser = await FirebaseAuth.instance.currentUser();
-    if (verify != null && firebaseUser.uid != verify.uid) {
-      _status = UserStatusCodes.logInFailure;
+    if (!isAutoLogin && firebaseUser.uid != verify.uid) {
+      _status = UserStatus.logInFailure;
       print(_status);
       notifyListeners();
       return false;
     }
     try {
       if (firebaseUser == null) {
-        _status = UserStatusCodes.logInFailure;
+        _status = UserStatus.logInFailure;
         print(_status);
         if (notify) notifyListeners();
         return false;
       } else {
         if (await fetchUserData())
-          _status = UserStatusCodes.loggedIn;
+          _status =
+              isAutoLogin ? UserStatus.loggedIn : UserStatus.authenticated;
         else
-          _status = UserStatusCodes.noProfile;
-        _phoneNum = firebaseUser.phoneNumber;
+          _status = UserStatus.authenticated;
+        phoneNum = firebaseUser.phoneNumber;
         print(status);
         if (notify) notifyListeners();
         return true;
@@ -88,7 +102,7 @@ class UserProvider extends ChangeNotifier {
   void clear({bool notify = true}) {
     firebaseUser = null;
     user = null;
-    _status = UserStatusCodes.initState;
+    _status = UserStatus.initialState;
     if (notify) notifyListeners();
   }
 
@@ -100,12 +114,12 @@ class UserProvider extends ChangeNotifier {
     AuthResult _authResult = await FirebaseAuth.instance
         .signInWithCredential(_authCredential)
         .catchError((error) {
-      _status = UserStatusCodes.otpError;
+      _status = UserStatus.wrongOtp;
       print(_status);
       notifyListeners();
       return;
     });
-    if (status != UserStatusCodes.otpError)
+    if (status != UserStatus.wrongOtp)
       await signInStatus(verify: _authResult.user);
   }
 
@@ -119,11 +133,11 @@ class UserProvider extends ChangeNotifier {
       uid: firebaseUser.uid,
       profilePic: '',
     );
-    if (status == UserStatusCodes.noProfile)
+    if (user != null)
       try {
         await UserRepo.createUser(tempUser);
         user = tempUser;
-        _status = UserStatusCodes.loggedIn;
+        _status = UserStatus.loggedIn;
         ret = true;
       } catch (e) {
         print(e);
@@ -132,8 +146,7 @@ class UserProvider extends ChangeNotifier {
       try {
         await UserRepo.updateUser(tempUser);
         user = tempUser;
-        if (_status != UserStatusCodes.loggedIn)
-          _status = UserStatusCodes.loggedIn;
+        if (_status != UserStatus.loggedIn) _status = UserStatus.loggedIn;
         ret = true;
       } catch (e) {
         print(e);
@@ -147,35 +160,41 @@ class UserProvider extends ChangeNotifier {
   Future<void> signInAutoOTP({String mobile}) async {
     print(countryCode);
     print(mobile);
-    _phoneNum = mobile==null?_phoneNum:mobile;
+    _phoneNum = mobile == null ? _phoneNum : mobile;
 //    _countryCode=countryCode;
     print(_phoneNum);
 //    notifyListeners();
     try {
       PhoneCodeSent codeSent = (String verID, [int forceResend]) async {
         this._verificationId = verID;
-        _status = UserStatusCodes.waitOtp;
+        _status = UserStatus.waitOtp;
         notifyListeners();
         print('Code sent to $mobile');
       };
       PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout = (String verID) {
+        if (status == UserStatus.authenticated || status == UserStatus.loggedIn)
+          return;
         this._verificationId = verID;
-        _status = UserStatusCodes.timeOut;
+        _status = UserStatus.timedOut;
         print(_status);
         notifyListeners();
       };
       final PhoneVerificationCompleted verificationCompleted =
           (AuthCredential auth) {
+        if (status == UserStatus.authenticated || status == UserStatus.loggedIn)
+          return;
         FirebaseAuth.instance
             .signInWithCredential(auth)
             .then((AuthResult value) async {
           if (value.user != null)
             await signInStatus();
           else {
-            _status = UserStatusCodes.verificationError;
+            _status = UserStatus.verificationError;
+            notifyListeners();
           }
         }).catchError((error) {
-          _status = UserStatusCodes.verificationError;
+          _status = UserStatus.verificationError;
+          notifyListeners();
         });
       };
       await FirebaseAuth.instance.verifyPhoneNumber(
@@ -184,7 +203,7 @@ class UserProvider extends ChangeNotifier {
         verificationCompleted: verificationCompleted,
         verificationFailed: (exp) {
           print(exp.message);
-          _status = UserStatusCodes.verificationError;
+          _status = UserStatus.verificationError;
           print(_status);
           notifyListeners();
         },
@@ -194,23 +213,25 @@ class UserProvider extends ChangeNotifier {
 //      UserData.profileData = await FirebaseAuth.instance.currentUser();
 //      print("here" + UserData.profileData.toString());
     } catch (e) {
-      throw e ;
+      _status = UserStatus.verificationError;
+      notifyListeners();
+      throw e;
     }
   }
 }
 
-class UserStatusCodes {
-  static get initState => 'INIT';
+class UserStatus {
+  static get initialState => 'INIT';
 
-  static get timeOut => 'TIMEOUT';
+  static get timedOut => 'TIMEDOUT';
 
   static get loggedIn => 'LOGGEDIN';
 
-  static get noProfile => 'NOPROFILE';
+  static get authenticated => 'AUTHENTICATED';
 
   static get waitOtp => 'WAITOTP';
 
-  static get otpError => 'WRONGOTP';
+  static get wrongOtp => 'WRONGOTP';
 
   static get verificationError => 'UNKNOWNERROR';
 

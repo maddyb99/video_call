@@ -9,8 +9,8 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 //    sizeConfig.init(context);
     var userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.status != UserStatusCodes.loginInProgress) {
-      if (userProvider.status == UserStatusCodes.loggedIn) {
+    if (userProvider.status != UserStatus.loginInProgress) {
+      if (userProvider.status == UserStatus.loggedIn) {
         Future.delayed(Duration(seconds: 1), () {
           Navigator.pushNamedAndRemoveUntil(
             context,

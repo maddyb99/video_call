@@ -60,7 +60,7 @@ class UserRepo {
       headers: {'Authorization': WebApiInfo.apiKey},
     );
     if (jsonDecode(response.body) is bool &&
-        (jsonDecode(response.body) as bool) == false) return User();
+        (jsonDecode(response.body) as bool) == false) return null;
     return User.fromJson(jsonDecode(response.body));
   }
 

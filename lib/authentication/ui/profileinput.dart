@@ -2,39 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
+import 'package:video_call/home_page/provider/contacts_provider.dart';
 
 class ProfileInput extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     String name, profilePhoto;
     var userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.status == UserStatusCodes.loggedIn) {
-      print("im in");
+    var contactProvider=Provider.of<ContactsProvider>(context);
+    if (userProvider.status == UserStatus.loggedIn)
       Future.delayed(Duration(seconds: 1)).then(
         (value) => Navigator.of(context).pushNamedAndRemoveUntil(
           '/home',
           ModalRoute.withName(':'),
         ),
       );
-    }
-    //TODO: fix snackbar
-//    else if (userProvider.status == UserStatusCodes.noProfile)
-//      Scaffold.of(context).showSnackBar(
-//        SnackBar(
-//          content: Text('Error Saving.'),
-//        ),
-//      );
-//    else if (userProvider.status == UserStatusCodes.verificationError)
-//      Scaffold.of(context).showSnackBar(
-//        SnackBar(
-//          content: Text('Could not verify. Please try again!'),
-//        ),
-//      );
+    else if (scaffoldKey.currentState!=null&&userProvider.status == UserStatus.authenticated)
+      scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Error Saving.'),
+        ),
+      );
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Scaffold(
+        key: scaffoldKey,
         body: LayoutBuilder(
           builder: (context, constraints) {
             return Card(
@@ -57,6 +52,7 @@ class ProfileInput extends StatelessWidget {
                             InputField(
                               'Name',
                               (s) => name = s,
+                              initailValue: userProvider.user==null?null:userProvider.user.name,
                               elevation: 2.0,
                               inputAction: TextInputAction.next,
                               prefix: Icons.person,

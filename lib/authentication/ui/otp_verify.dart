@@ -14,8 +14,8 @@ class OTPVerify extends StatelessWidget {
   Widget build(BuildContext context) {
     String smsCode;
     var userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.status == UserStatusCodes.noProfile ||
-        userProvider.status == UserStatusCodes.loggedIn) {
+    if (userProvider.status == UserStatus.authenticated ||
+        userProvider.status == UserStatus.loggedIn) {
       Future.delayed(Duration(seconds: 1)).then(
         (value) => Navigator.of(context).push(
           MaterialPageRoute(
@@ -24,13 +24,13 @@ class OTPVerify extends StatelessWidget {
         ),
       );
     }
-    else if (scaffoldKey.currentState!=null&&userProvider.status == UserStatusCodes.otpError)
+    else if (scaffoldKey.currentState!=null&&userProvider.status == UserStatus.wrongOtp)
       scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Invalid OTP'),
         ),
       );
-    else if (scaffoldKey.currentState!=null&&userProvider.status == UserStatusCodes.verificationError)
+    else if (scaffoldKey.currentState!=null&&userProvider.status == UserStatus.verificationError)
       scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Could not verify. Please try again!'),
@@ -76,7 +76,7 @@ class OTPVerify extends StatelessWidget {
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           padding: EdgeInsets.all(0),
                           onPressed:
-                              userProvider.status == UserStatusCodes.waitOtp
+                              userProvider.status == UserStatus.waitOtp
                                   ? null:()=>userProvider.signInAutoOTP(),
                           child: Text('Resend'),
                         ),

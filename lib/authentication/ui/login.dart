@@ -14,7 +14,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     String mobile;
     var userProvider = Provider.of<UserProvider>(context);
-    if (userProvider.status == UserStatusCodes.waitOtp)
+    if (userProvider.status == UserStatus.waitOtp)
       Future.delayed(Duration(seconds: 1)).then(
         (value) => Navigator.of(context).push(
           MaterialPageRoute(
@@ -22,9 +22,9 @@ class Login extends StatelessWidget {
           ),
         ),
       );
-    else if (scaffoldKey.currentState!=null&&(userProvider.status == UserStatusCodes.logInFailure ||
-        userProvider.status == UserStatusCodes.otpError ||
-        userProvider.status == UserStatusCodes.verificationError))
+    else if (scaffoldKey.currentState!=null&&(userProvider.status == UserStatus.logInFailure ||
+        userProvider.status == UserStatus.wrongOtp ||
+        userProvider.status == UserStatus.verificationError))
       scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Unknown Error'),
