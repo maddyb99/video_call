@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/common/provider/notif_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
 import 'package:video_call/home_page/provider/contacts_provider.dart';
 
@@ -26,6 +27,7 @@ class ProfileInput extends StatelessWidget {
           content: Text('Error Saving.'),
         ),
       );
+    var notifProvider=Provider.of<NotificationProvider>(context);
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: Scaffold(
@@ -68,6 +70,7 @@ class ProfileInput extends StatelessWidget {
                         ),
                       ),
                     ),
+<<<<<<< HEAD
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
@@ -80,6 +83,25 @@ class ProfileInput extends StatelessWidget {
                           if (formState.validate()) {
                             formState.save();
                             userProvider.updateUser(name);
+=======
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                    child: MaterialButton(
+                      color: Colors.green[400],
+                      onPressed: () async {
+                        FormState formState = formKey.currentState;
+                        if (formState.validate()) {
+                          formState.save();
+                          await userProvider.updateUser(name);
+                          await notifProvider.updateToken(userProvider.firebaseUser.uid);
+                          if (userProvider.status == StatusCodes.loggedIn) {
+                            print("im in");
+                            Navigator.of(context).pushNamedAndRemoveUntil('/home', ModalRoute.withName(':'));
+>>>>>>> add notif repository and complete notif provider
                           }
                         },
                         child: Text('Save'),

@@ -4,6 +4,7 @@ import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/authentication/ui/login.dart';
 import 'package:video_call/home_page/provider/contacts_provider.dart';
 import 'package:video_call/checknotif.dart';
+import 'package:video_call/common/provider/notif_provider.dart';
 import 'package:video_call/splash/splash_screen.dart';
 import 'package:video_call/video_call/init.dart';
 import 'common/theme.dart';
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ContactsProvider()),
+        ChangeNotifierProvider(create: (_)=>UserProvider()),
+        ChangeNotifierProvider(create: (_)=>NotificationProvider(),)
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
