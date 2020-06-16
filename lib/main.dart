@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/checknotif.dart';
+import 'package:video_call/common/provider/notif_provider.dart';
 import 'package:video_call/splash/splash_screen.dart';
 import 'package:video_call/video_call/init.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=>UserProvider()),
+        ChangeNotifierProvider(create: (_)=>NotificationProvider(),)
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           '/home': (BuildContext context) => HomePage(),
           '/video': (BuildContext context) => StartVideo(),
         },
-        home: PushMessagingExample(),
+        home: AuthenticationPage(),
       ),
     );
   }

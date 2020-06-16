@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/common/provider/notif_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
 class ProfileInput extends StatelessWidget {
@@ -13,6 +14,7 @@ class ProfileInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
+    var notifProvider=Provider.of<NotificationProvider>(context);
     return ChangeNotifierProvider.value(
       value: userProvider,
       child: LayoutBuilder(
@@ -64,6 +66,7 @@ class ProfileInput extends StatelessWidget {
                         if (formState.validate()) {
                           formState.save();
                           await userProvider.updateUser(name);
+                          await notifProvider.updateToken(userProvider.firebaseUser.uid);
                           if (userProvider.status == StatusCodes.loggedIn) {
                             print("im in");
                             Navigator.of(context).pushNamedAndRemoveUntil('/home', ModalRoute.withName(':'));

@@ -1,12 +1,11 @@
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:video_call/common/resource/notif_repository.dart';
 
 class NotificationProvider extends ChangeNotifier{
   NotificationProvider(){
-    _configureNotifications();
-    _getToken();
-    status=NotificationStatusCodes.initialized;
+    initialize();
   }
 
   String _notifToken;
@@ -26,15 +25,25 @@ class NotificationProvider extends ChangeNotifier{
   }
 
   void initialize(){
+    _firebaseMessaging=FirebaseMessaging();
+    _notifToken="";
     _configureNotifications();
     _getToken();
     status=NotificationStatusCodes.initialized;
+    print(notifToken);
+  }
+
+  Future<void> updateToken(String uid)async{
+    if (notifToken.length==0)
+      initialize();
+    await NotificationRepo.updateNotifToken(uid,notifToken);
   }
 
   void _getToken(){
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       _notifToken=token;
+      print(_notifToken);
     });
   }
 
