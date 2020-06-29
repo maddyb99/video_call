@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:video_call/common/provider/notif_provider.dart';
+import 'package:video_call/common/resource/notification_manager.dart';
 import 'package:video_call/common/ui/floating_action_button.dart';
 import 'package:video_call/home_page/provider/contacts_provider.dart';
 import 'package:video_call/home_page/ui/contact_tile.dart';
@@ -11,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   void initState() {
     super.initState();
@@ -18,7 +21,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    NotificationManger.init(context: context);
     var contactsProvider = Provider.of<ContactsProvider>(context);
+    var notificationProvider=Provider.of<NotificationProvider>(context);
     return ChangeNotifierProvider.value(
       value: contactsProvider,
       child: Scaffold(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/authentication/ui/country_picker.dart';
 import 'package:video_call/authentication/ui/otp_verify.dart';
+import 'package:video_call/common/provider/user_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
 class Login extends StatelessWidget {

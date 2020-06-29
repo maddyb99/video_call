@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:video_call/authentication/provider/user_provider.dart';
 import 'package:video_call/authentication/ui/otp_timeout.dart';
 import 'package:video_call/authentication/ui/profileinput.dart';
+import 'package:video_call/common/provider/user_provider.dart';
 import 'package:video_call/common/ui/customFields.dart';
 
 class OTPVerify extends StatelessWidget {

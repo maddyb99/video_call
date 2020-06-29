@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/common/provider/user_provider.dart';
 
 class SplashScreen extends StatelessWidget {
 //  final SizeConfig sizeConfig = SizeConfig();

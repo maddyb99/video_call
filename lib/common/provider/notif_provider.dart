@@ -2,6 +2,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:video_call/common/resource/notif_repository.dart';
+import 'package:video_call/common/resource/notification_manager.dart';
+import 'package:video_call/video_call/init.dart';
 
 class NotificationProvider extends ChangeNotifier{
   NotificationProvider(){
@@ -48,19 +50,14 @@ class NotificationProvider extends ChangeNotifier{
   }
 
   void _configureNotifications(){
+//    if (Platform.isIOS) _iosPermission();
+
+    _firebaseMessaging.requestNotificationPermissions();
+    _firebaseMessaging.autoInitEnabled();
     _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-//        _showItemDialog(message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-//        _navigateToItemDetail(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-//        _navigateToItemDetail(message);
-      },
+      onMessage: (Map<String, dynamic> message) async =>NotificationManger.onMessage(message),
+      onLaunch: (Map<String, dynamic> message) async =>NotificationManger.onLaunch(message),
+      onResume: (Map<String, dynamic> message) async =>NotificationManger.onResume(message),
     );
   }
 

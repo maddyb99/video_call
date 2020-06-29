@@ -10,10 +10,9 @@ class NotificationRepo {
     if (uid == null) throw Exception('Invalid uid!');
     if (token == null) throw Exception('Invalid token!');
     var response = await http.post(
-      "${WebApiInfo.apiUrl}/notif/",
+      "${WebApiInfo.apiUrl}/notification/",
       headers: {
         'Authorization': WebApiInfo.apiKey,
-        'content-type': 'application/json',
       },
       body: {
         'uid':uid,
@@ -27,7 +26,7 @@ class NotificationRepo {
   static Future<void> PushNotif(String uid) async {
     if (uid == null) throw Exception('Invalid uid!');
     var response = await http.post(
-      "${WebApiInfo.apiUrl}/notif/send",
+      "${WebApiInfo.apiUrl}/notification/send",
       headers: {'Authorization': WebApiInfo.apiKey},
       body:{
         'uid':uid,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_call/authentication/provider/country_codes_const.dart';
-import 'package:video_call/authentication/provider/user_provider.dart';
+import 'package:video_call/common/provider/user_provider.dart';
 
 class CountryPicker extends StatelessWidget {
   @override
